@@ -36,7 +36,7 @@ export function SideNav() {
   }, []);
 
   return (
-    <nav className="fixed right-8 top-1/2 z-50 hidden -translate-y-1/2 flex-col items-end gap-5 xl:flex">
+    <nav className="fixed right-6 top-1/2 z-50 hidden -translate-y-1/2 flex-col items-end gap-5 lg:flex">
       {sections.map(({ id, label }) => (
         <a
           key={id}
