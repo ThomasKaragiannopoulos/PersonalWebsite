@@ -7,17 +7,17 @@ export function SiteHeader() {
         <a href="#home" className="flex shrink-0 items-center gap-2">
           <span className="text-xl leading-none">🤗</span>
           <span className="font-mono text-sm text-[var(--muted)] transition-colors hover:text-white">
-            Hugging Face
+            Thomas K.
           </span>
         </a>
 
         <nav className="hidden items-center gap-6 text-sm text-[var(--muted)] lg:flex">
-          <a href="#experience" className="transition-colors hover:text-white">Models</a>
-          <a href="#projects" className="transition-colors hover:text-white">Datasets</a>
-          <a href="#skills" className="transition-colors hover:text-white">Spaces</a>
-          <a href="#education" className="transition-colors hover:text-white">Papers</a>
-          <a href="#contact" className="transition-colors hover:text-white">Docs</a>
-          <span className="cursor-default text-white/20">Enterprise</span>
+          <a href="#home" className="transition-colors hover:text-white">Home</a>
+          <a href="#experience" className="transition-colors hover:text-white">Experience</a>
+          <a href="#projects" className="transition-colors hover:text-white">Projects</a>
+          <a href="#skills" className="transition-colors hover:text-white">Skills</a>
+          <a href="#education" className="transition-colors hover:text-white">Training Data</a>
+          <a href="#contact" className="transition-colors hover:text-white">Contact</a>
         </nav>
 
         <div className="ml-auto flex items-center gap-3">
