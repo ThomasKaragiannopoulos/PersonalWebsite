@@ -49,8 +49,8 @@ export function SideNav() {
           <span
             className={`block rounded-full transition-all duration-300 ${
               active === id
-                ? "h-2 w-2 bg-white"
-                : "h-1.5 w-1.5 bg-[var(--muted)] opacity-30 group-hover:opacity-60"
+                ? "h-3 w-3 bg-white"
+                : "h-2.5 w-2.5 bg-[var(--muted)] opacity-30 group-hover:opacity-60"
             }`}
           />
         </a>
