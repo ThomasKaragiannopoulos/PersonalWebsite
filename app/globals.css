@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #07090d;
-  --foreground: #f5f7fb;
+  --background: #0a0a0a;
+  --foreground: #f0f0ee;
   --muted: #98a2b3;
   --surface: rgba(13, 18, 27, 0.8);
   --surface-strong: rgba(17, 24, 36, 0.94);
@@ -27,10 +27,7 @@ html {
 }
 
 body {
-  background:
-    radial-gradient(circle at top left, rgba(107, 166, 255, 0.14), transparent 28%),
-    radial-gradient(circle at 85% 20%, rgba(255, 184, 107, 0.12), transparent 24%),
-    linear-gradient(180deg, #05070b 0%, #090d14 52%, #05070b 100%);
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body), sans-serif;
   text-rendering: optimizeLegibility;
@@ -47,31 +44,33 @@ a {
 }
 
 .font-display {
-  font-family: var(--font-display), sans-serif;
+  font-family: var(--font-display), serif;
+}
+
+.font-mono {
+  font-family: var(--font-mono), monospace;
 }
 
 .section-kicker {
-  color: var(--accent);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.24em;
+  color: var(--muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .section-title {
-  font-family: var(--font-display), sans-serif;
+  font-family: var(--font-display), serif;
   font-size: clamp(1.5rem, 2.5vw, 2.25rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
 }
 
 .surface-card {
-  background: linear-gradient(180deg, rgba(16, 22, 33, 0.92), rgba(10, 14, 22, 0.88));
-  border: 1px solid var(--border);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.02) inset,
-    0 24px 80px rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .section-divider {

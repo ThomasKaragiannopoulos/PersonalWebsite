@@ -7,17 +7,14 @@ export function Projects() {
   return (
     <RevealSection id="projects" className="section-divider scroll-mt-24 py-20 sm:py-24">
       <div className="mb-12 max-w-3xl pt-10">
-        <p className="section-kicker">Projects</p>
-        <h2 className="section-title mt-4 text-white">
-          A mix of platform engineering, shipped experiments, and what comes next.
-        </h2>
+        <h2 className="section-title text-white">Projects</h2>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
         {projects.map((project) => (
           <HoverCard
             key={project.name}
-            className={`surface-card relative overflow-hidden rounded-[2rem] p-6 sm:p-7 ${
+            className={`surface-card relative overflow-hidden rounded-xl p-6 sm:p-7 ${
               project.isLocked ? "before:absolute before:inset-0 before:bg-[rgba(7,9,13,0.46)] before:backdrop-blur-[2px]" : ""
             }`}
           >
@@ -28,10 +25,10 @@ export function Projects() {
             ) : null}
 
             <div className={`relative ${project.isLocked ? "blur-[1.8px]" : ""}`}>
-              <p className="text-sm uppercase tracking-[0.24em] text-[var(--muted)]">
+              <p className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">
                 {project.subtitle}
               </p>
-              <h3 className="mt-4 font-display text-2xl font-semibold tracking-[-0.04em] text-white">
+              <h3 className="mt-4 font-display text-2xl font-normal text-white">
                 {project.name}
               </h3>
               <p className="mt-4 text-sm leading-7 text-[var(--foreground)]/80">

@@ -6,16 +6,13 @@ import { siteContent } from "@/data/site-content";
 export function Contact() {
   return (
     <RevealSection id="contact" className="section-divider scroll-mt-24 py-20 sm:py-24">
-      <div className="surface-card rounded-[2rem] p-8 sm:p-10">
+      <div className="surface-card rounded-xl p-8 sm:p-10">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_auto] lg:items-end">
           <div>
-            <p className="section-kicker">Contact</p>
-            <h2 className="section-title mt-4 text-white">
-              Open to ambitious AI engineering work, product-heavy teams, and difficult systems problems.
-            </h2>
+            <h2 className="section-title text-white">Get in touch</h2>
             <p className="mt-5 max-w-2xl text-base leading-8 text-[var(--muted)]">
-              Best first contact is email. LinkedIn is active, and the CV download is mirrored
-              here for job applications and recruiter outreach.
+              Open to AI engineering roles, product-heavy teams, and difficult systems problems.
+              Email is the best first contact.
             </p>
           </div>
 

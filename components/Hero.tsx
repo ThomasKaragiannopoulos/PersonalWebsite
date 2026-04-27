@@ -36,12 +36,8 @@ export function Hero() {
         animate="visible"
       >
         <div className="space-y-8">
-          <motion.p variants={heroItem} className="section-kicker">
-            karagiannopoulos.dev
-          </motion.p>
-
           <motion.div variants={heroItem} className="space-y-5">
-            <h1 className="font-display max-w-5xl text-4xl font-bold tracking-[-0.06em] text-white sm:text-5xl lg:text-7xl">
+            <h1 className="font-display max-w-5xl text-4xl font-normal text-white sm:text-5xl lg:text-7xl">
               {siteContent.name}
             </h1>
             <p className="max-w-3xl text-lg text-[var(--muted)] sm:text-xl">
@@ -51,7 +47,7 @@ export function Hero() {
 
           <motion.p
             variants={heroItem}
-            className="max-w-2xl text-base leading-8 text-[var(--foreground)]/84 sm:text-lg"
+            className="max-w-2xl text-base leading-8 text-[var(--foreground)]/75 sm:text-lg"
           >
             {siteContent.pitch}
           </motion.p>
@@ -94,18 +90,18 @@ export function Hero() {
           </motion.div>
         </div>
 
-        <motion.div variants={heroItem} className="surface-card rounded-[2rem] p-7 sm:p-8">
-          <div className="mb-8 flex items-center justify-between text-xs uppercase tracking-[0.24em] text-[var(--muted)]">
-            <span>Current Focus</span>
-            <span className="h-2.5 w-2.5 rounded-full bg-[var(--accent)] shadow-[0_0_24px_var(--accent-glow)]" />
+        <motion.div variants={heroItem} className="surface-card rounded-xl p-7 sm:p-8">
+          <div className="mb-8 flex items-center justify-between">
+            <span className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Current Focus</span>
+            <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
           </div>
 
           <div className="space-y-6">
             <div>
-              <p className="text-sm uppercase tracking-[0.24em] text-[var(--muted)]">
+              <p className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">
                 Specialisation
               </p>
-              <p className="mt-2 font-display text-lg font-semibold tracking-[-0.03em] text-white">
+              <p className="mt-2 font-display text-lg font-normal text-white">
                 Retrieval-heavy AI systems with production constraints
               </p>
             </div>
@@ -124,8 +120,8 @@ export function Hero() {
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-4">
-      <p className="font-display text-xl font-semibold tracking-[-0.04em] text-white">
+    <div className="rounded-lg border border-white/8 bg-white/[0.03] p-4">
+      <p className="font-display text-xl font-normal text-white">
         {value}
       </p>
       <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{label}</p>

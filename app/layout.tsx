@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const bodyFont = Inter({
@@ -7,9 +7,16 @@ const bodyFont = Inter({
   subsets: ["latin"],
 });
 
-const displayFont = Space_Grotesk({
+const displayFont = Instrument_Serif({
   variable: "--font-display",
   subsets: ["latin"],
+  weight: "400",
+});
+
+const monoFont = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -47,7 +54,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bodyFont.variable} ${displayFont.variable} h-full scroll-smooth`}
+      className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} h-full scroll-smooth`}
     >
       <body className="min-h-full">{children}</body>
     </html>

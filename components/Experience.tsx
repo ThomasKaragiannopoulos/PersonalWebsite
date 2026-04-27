@@ -10,21 +10,18 @@ export function Experience() {
       className="section-divider scroll-mt-24 py-20 sm:py-24"
     >
       <div className="mb-12 max-w-3xl pt-10">
-        <p className="section-kicker">Experience</p>
-        <h2 className="section-title mt-4 text-white">
-          Shipping enterprise AI and building products on the side.
-        </h2>
+        <h2 className="section-title text-white">Experience</h2>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         {experience.map((entry) => (
           <HoverCard
             key={`${entry.company}-${entry.role}`}
-            className="surface-card rounded-[2rem] p-6 sm:p-8"
+            className="surface-card rounded-xl p-6 sm:p-8"
           >
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <h3 className="font-display text-2xl font-semibold tracking-[-0.04em] text-white">
+                <h3 className="font-display text-2xl font-normal text-white">
                   {entry.role}
                 </h3>
                 <p className="mt-2 text-lg text-[var(--muted)]">
@@ -43,7 +40,7 @@ export function Experience() {
                   | {entry.period}
                 </p>
               </div>
-              <span className="rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+              <span className="font-mono rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs uppercase tracking-[0.1em] text-[var(--muted)]">
                 {entry.period}
               </span>
             </div>
@@ -56,7 +53,7 @@ export function Experience() {
               {entry.projects.map((project) => (
                 <div
                   key={`${entry.company}-${project.name}`}
-                  className="rounded-3xl border border-white/8 bg-white/[0.03] p-4 transition-colors duration-300 hover:border-[var(--accent)]/30"
+                  className="rounded-lg border border-white/8 bg-white/[0.03] p-4 transition-colors duration-300 hover:border-white/15"
                 >
                   <p className="font-semibold text-white">{project.name}</p>
                   <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
