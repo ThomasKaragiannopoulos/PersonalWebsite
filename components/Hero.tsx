@@ -41,7 +41,7 @@ export function Hero() {
           </motion.p>
 
           <motion.div variants={heroItem} className="space-y-5">
-            <h1 className="font-display max-w-5xl text-5xl font-bold tracking-[-0.08em] text-white sm:text-6xl lg:text-8xl">
+            <h1 className="font-display max-w-5xl text-4xl font-bold tracking-[-0.06em] text-white sm:text-5xl lg:text-7xl">
               {siteContent.name}
             </h1>
             <p className="max-w-3xl text-lg text-[var(--muted)] sm:text-xl">
@@ -105,7 +105,7 @@ export function Hero() {
               <p className="text-sm uppercase tracking-[0.24em] text-[var(--muted)]">
                 Specialisation
               </p>
-              <p className="mt-2 font-display text-2xl font-semibold tracking-[-0.04em] text-white">
+              <p className="mt-2 font-display text-lg font-semibold tracking-[-0.03em] text-white">
                 Retrieval-heavy AI systems with production constraints
               </p>
             </div>
@@ -125,7 +125,7 @@ export function Hero() {
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-4">
-      <p className="font-display text-2xl font-semibold tracking-[-0.05em] text-white">
+      <p className="font-display text-xl font-semibold tracking-[-0.04em] text-white">
         {value}
       </p>
       <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{label}</p>

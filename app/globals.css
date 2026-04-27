@@ -60,9 +60,9 @@ a {
 
 .section-title {
   font-family: var(--font-display), sans-serif;
-  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
   font-weight: 700;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.04em;
 }
 
 .surface-card {

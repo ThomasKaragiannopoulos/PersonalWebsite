@@ -24,7 +24,7 @@ export function Education() {
           >
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <h3 className="font-display text-3xl font-semibold tracking-[-0.05em] text-white">
+                <h3 className="font-display text-2xl font-semibold tracking-[-0.04em] text-white">
                   {entry.degree}
                 </h3>
                 <p className="mt-2 text-lg text-[var(--muted)]">

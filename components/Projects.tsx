@@ -31,7 +31,7 @@ export function Projects() {
               <p className="text-sm uppercase tracking-[0.24em] text-[var(--muted)]">
                 {project.subtitle}
               </p>
-              <h3 className="mt-4 font-display text-3xl font-semibold tracking-[-0.05em] text-white">
+              <h3 className="mt-4 font-display text-2xl font-semibold tracking-[-0.04em] text-white">
                 {project.name}
               </h3>
               <p className="mt-4 text-sm leading-7 text-[var(--foreground)]/80">

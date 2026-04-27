@@ -16,7 +16,7 @@ export function Skills() {
       <div className="grid gap-6 lg:grid-cols-2">
         {skillGroups.map((group) => (
           <div key={group.title} className="surface-card rounded-[2rem] p-6 sm:p-7">
-            <h3 className="font-display text-2xl font-semibold tracking-[-0.04em] text-white">
+            <h3 className="font-display text-lg font-semibold tracking-[-0.03em] text-white">
               {group.title}
             </h3>
             <div className="mt-5 flex flex-wrap gap-3">
