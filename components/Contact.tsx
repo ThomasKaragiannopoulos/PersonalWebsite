@@ -5,11 +5,12 @@ import { siteContent } from "@/data/site-content";
 
 export function Contact() {
   return (
-    <RevealSection id="contact" className="section-divider scroll-mt-24 py-20 sm:py-24">
-      <div className="surface-card rounded-xl p-8 sm:p-10">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_auto] lg:items-end">
-          <div>
-            <h2 className="section-title text-white">Get in touch</h2>
+    <RevealSection id="contact" className="section-divider scroll-mt-16 pb-20 sm:pb-24">
+      <div className="pt-12 sm:pt-16">
+        <div className="surface-card rounded-xl p-8 sm:p-10">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_auto] lg:items-end">
+            <div>
+              <h2 className="section-title text-white">Get in touch</h2>
             <p className="mt-5 max-w-2xl text-base leading-8 text-[var(--muted)]">
               Open to AI engineering roles, product-heavy teams, and difficult systems problems.
               Email is the best first contact.
@@ -39,8 +40,8 @@ export function Contact() {
               Download CV
             </a>
           </div>
+          </div>
         </div>
-
       </div>
     </RevealSection>
   );

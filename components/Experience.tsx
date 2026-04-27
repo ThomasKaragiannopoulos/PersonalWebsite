@@ -7,9 +7,9 @@ export function Experience() {
   return (
     <RevealSection
       id="experience"
-      className="section-divider scroll-mt-24 py-20 sm:py-24"
+      className="section-divider scroll-mt-16 pb-20 sm:pb-24"
     >
-      <div className="mb-12 max-w-3xl pt-10">
+      <div className="mb-12 max-w-3xl pt-12 sm:pt-16">
         <h2 className="section-title text-white">Experience</h2>
       </div>
 

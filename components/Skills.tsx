@@ -5,8 +5,8 @@ import { skillGroups } from "@/data/site-content";
 
 export function Skills() {
   return (
-    <RevealSection id="skills" className="section-divider scroll-mt-24 py-20 sm:py-24">
-      <div className="mb-12 max-w-3xl pt-10">
+    <RevealSection id="skills" className="section-divider scroll-mt-16 pb-20 sm:pb-24">
+      <div className="mb-12 max-w-3xl pt-12 sm:pt-16">
         <h2 className="section-title text-white">Skills</h2>
       </div>
 
