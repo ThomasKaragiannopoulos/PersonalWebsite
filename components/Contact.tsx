@@ -34,7 +34,7 @@ export function Contact() {
             <a
               href={siteContent.cvPath}
               download
-              className="inline-flex items-center rounded-full border border-[var(--accent)]/40 bg-[var(--accent-soft)] px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-[var(--accent)] hover:bg-[rgba(107,166,255,0.22)]"
+              className="inline-flex items-center rounded-full border border-[var(--accent)]/40 bg-[var(--accent-soft)] px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-[var(--accent)] hover:bg-[var(--accent-soft)]"
             >
               Download CV
             </a>

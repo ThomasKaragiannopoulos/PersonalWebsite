@@ -7,9 +7,9 @@
   --surface: rgba(13, 18, 27, 0.8);
   --surface-strong: rgba(17, 24, 36, 0.94);
   --border: rgba(255, 255, 255, 0.1);
-  --accent: #6ba6ff;
-  --accent-soft: rgba(107, 166, 255, 0.14);
-  --accent-glow: rgba(107, 166, 255, 0.28);
+  --accent: #ff9d00;
+  --accent-soft: rgba(255, 157, 0, 0.12);
+  --accent-glow: rgba(255, 157, 0, 0.28);
 }
 
 @theme inline {

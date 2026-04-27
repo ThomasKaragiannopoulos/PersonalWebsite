@@ -36,18 +36,12 @@ export function Hero() {
         animate="visible"
       >
         <div className="space-y-8">
-          <motion.div
-            variants={heroItem}
-            className="font-mono text-xs leading-relaxed text-[var(--muted)] max-w-xs space-y-1"
-          >
-            <p className="text-white/20 select-none">---</p>
-            <p><span className="text-[var(--accent)]">pipeline_tag: </span>retrieval-augmented-generation</p>
-            <p><span className="text-[var(--accent)]">tags: </span>[production, enterprise, agents, rag]</p>
-            <p><span className="text-[var(--accent)]">license: </span>open-to-work</p>
-            <p className="text-white/20 select-none">---</p>
-          </motion.div>
-
           <motion.div variants={heroItem} className="space-y-5">
+            <p className="font-mono text-sm text-[var(--muted)]">
+              <span>thomas-k</span>
+              <span className="mx-1 text-white/20">/</span>
+              <span className="text-white">ai-engineer</span>
+            </p>
             <h1 className="font-display max-w-5xl text-4xl font-normal text-white sm:text-5xl lg:text-7xl">
               {siteContent.name}
             </h1>
@@ -62,6 +56,17 @@ export function Hero() {
           >
             {siteContent.pitch}
           </motion.p>
+
+          <motion.div variants={heroItem} className="flex flex-wrap gap-2">
+            {["retrieval-augmented-generation", "production", "enterprise", "agents", "open-to-work"].map((tag) => (
+              <span
+                key={tag}
+                className="font-mono text-[11px] px-2.5 py-1 rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] text-[var(--accent)]"
+              >
+                {tag}
+              </span>
+            ))}
+          </motion.div>
 
           <motion.div
             variants={heroItem}
@@ -88,7 +93,7 @@ export function Hero() {
             <a
               href={siteContent.cvPath}
               download
-              className="inline-flex items-center rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-slate-950 transition-transform duration-300 hover:-translate-y-0.5"
+              className="inline-flex items-center rounded-full border border-[var(--accent)] bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-black transition-transform duration-300 hover:-translate-y-0.5"
             >
               Download CV
             </a>
