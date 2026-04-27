@@ -36,25 +36,21 @@ export function SideNav() {
   }, []);
 
   return (
-    <nav className="fixed right-6 top-1/2 z-50 hidden -translate-y-1/2 flex-col items-end gap-5 lg:flex">
+    <nav className="fixed right-5 top-1/2 z-50 hidden -translate-y-1/2 flex-col items-center gap-4 lg:flex">
       {sections.map(({ id, label }) => (
         <a
           key={id}
           href={`#${id}`}
-          className={`group flex items-center gap-3 transition-all duration-300 ${
-            active === id ? "opacity-100" : "opacity-25 hover:opacity-60"
-          }`}
+          className="group relative flex items-center justify-end"
         >
-          <span
-            className={`font-mono text-[10px] uppercase tracking-[0.12em] transition-colors duration-300 ${
-              active === id ? "text-white" : "text-[var(--muted)]"
-            }`}
-          >
+          <span className="pointer-events-none absolute right-4 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--foreground)] opacity-0 transition-opacity duration-200 group-hover:opacity-70">
             {label}
           </span>
           <span
-            className={`block h-px rounded-full transition-all duration-300 ${
-              active === id ? "w-5 bg-white" : "w-2 bg-[var(--muted)] group-hover:w-3"
+            className={`block rounded-full transition-all duration-300 ${
+              active === id
+                ? "h-2 w-2 bg-white"
+                : "h-1.5 w-1.5 bg-[var(--muted)] opacity-30 group-hover:opacity-60"
             }`}
           />
         </a>
