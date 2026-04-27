@@ -28,7 +28,7 @@ const heroItem = {
 
 export function Hero() {
   return (
-    <section className="flex min-h-screen items-center py-24">
+    <section id="home" className="flex min-h-screen items-center py-24">
       <motion.div
         className="grid w-full gap-14 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-end"
         variants={heroItems}
