@@ -41,10 +41,6 @@ export function Contact() {
           </div>
         </div>
 
-        <footer className="mt-12 flex flex-col gap-3 border-t border-white/8 pt-6 text-sm text-[var(--muted)] sm:flex-row sm:items-center sm:justify-between">
-          <p>{siteContent.name}</p>
-          <p>{new Date().getFullYear()}</p>
-        </footer>
       </div>
     </RevealSection>
   );

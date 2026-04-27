@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "mcp__codebase-memory-mcp__index_status",
-      "mcp__codebase-memory-mcp__get_architecture"
+      "mcp__codebase-memory-mcp__get_architecture",
+      "WebSearch",
+      "Bash(gh api:*)",
+      "WebFetch(domain:antfu.me)",
+      "WebFetch(domain:leerob.com)",
+      "WebFetch(domain:paco.me)",
+      "Bash(find C:UsersthkaragiProjectsVaultReposPersonalWebsitenode_modulesnext -name *.md -maxdepth 4)",
+      "Bash(grep -r \"Instrument_Serif\\\\|JetBrains_Mono\" C:UsersthkaragiProjectsVaultReposPersonalWebsitenode_modulesnextdist --include=*.d.ts -l)"
     ]
   }
 }
