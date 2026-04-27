@@ -22,17 +22,18 @@ export function SiteHeader() {
 
         <div className="ml-auto flex items-center gap-3">
           <a
-            href={`mailto:${siteContent.email}`}
+            href={siteContent.linkedin}
+            target="_blank"
+            rel="noreferrer"
             className="rounded-lg border border-white/10 px-3 py-1.5 text-sm text-[var(--muted)] transition-colors hover:border-white/20 hover:text-white"
           >
-            Sign In
+            LinkedIn
           </a>
           <a
-            href={siteContent.cvPath}
-            download
+            href={`mailto:${siteContent.email}`}
             className="rounded-lg bg-[var(--accent)] px-3 py-1.5 text-sm font-semibold text-black transition-opacity hover:opacity-90"
           >
-            Sign Up
+            Email
           </a>
         </div>
       </div>
