@@ -7,7 +7,7 @@ const sections = [
   { id: "experience", label: "Experience" },
   { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
-  { id: "education", label: "Education" },
+  { id: "education", label: "Training Data" },
   { id: "contact", label: "Contact" },
 ];
 
@@ -36,25 +36,31 @@ export function SideNav() {
   }, []);
 
   return (
-    <nav className="fixed right-5 top-1/2 z-50 hidden -translate-y-1/2 flex-col items-center gap-4 lg:flex">
-      {sections.map(({ id, label }) => (
-        <a
-          key={id}
-          href={`#${id}`}
-          className="group relative flex items-center justify-end"
-        >
-          <span className="pointer-events-none absolute right-4 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--foreground)] opacity-0 transition-opacity duration-200 group-hover:opacity-70">
-            {label}
-          </span>
-          <span
-            className={`block rounded-full transition-all duration-300 ${
-              active === id
-                ? "h-3 w-3 bg-white"
-                : "h-2.5 w-2.5 bg-[var(--muted)] opacity-30 group-hover:opacity-60"
-            }`}
-          />
-        </a>
-      ))}
+    <nav className="fixed right-5 top-1/2 z-50 hidden -translate-y-1/2 lg:flex">
+      <div className="relative flex flex-col items-center gap-5">
+        <div className="pointer-events-none absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-white/10" />
+        {sections.map(({ id, label }) => (
+          <a
+            key={id}
+            href={`#${id}`}
+            className="group relative flex items-center justify-end"
+          >
+            <span className="pointer-events-none absolute right-4 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--foreground)] opacity-0 transition-opacity duration-200 group-hover:opacity-70">
+              {label}
+            </span>
+            {active === id && (
+              <span className="absolute h-5 w-5 rounded-full border border-white/25 transition-all duration-300" />
+            )}
+            <span
+              className={`relative block rounded-full transition-all duration-300 ${
+                active === id
+                  ? "h-2.5 w-2.5 bg-white"
+                  : "h-2 w-2 bg-[var(--muted)] opacity-30 group-hover:opacity-60"
+              }`}
+            />
+          </a>
+        ))}
+      </div>
     </nav>
   );
 }

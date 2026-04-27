@@ -36,6 +36,17 @@ export function Hero() {
         animate="visible"
       >
         <div className="space-y-8">
+          <motion.div
+            variants={heroItem}
+            className="font-mono text-xs leading-relaxed text-[var(--muted)] max-w-xs space-y-1"
+          >
+            <p className="text-white/20 select-none">---</p>
+            <p><span className="text-[var(--accent)]">pipeline_tag: </span>retrieval-augmented-generation</p>
+            <p><span className="text-[var(--accent)]">tags: </span>[production, enterprise, agents, rag]</p>
+            <p><span className="text-[var(--accent)]">license: </span>open-to-work</p>
+            <p className="text-white/20 select-none">---</p>
+          </motion.div>
+
           <motion.div variants={heroItem} className="space-y-5">
             <h1 className="font-display max-w-5xl text-4xl font-normal text-white sm:text-5xl lg:text-7xl">
               {siteContent.name}
@@ -92,14 +103,14 @@ export function Hero() {
 
         <motion.div variants={heroItem} className="surface-card rounded-xl p-7 sm:p-8">
           <div className="mb-8 flex items-center justify-between">
-            <span className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">Current Focus</span>
+            <span className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">eval results</span>
             <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
           </div>
 
           <div className="space-y-6">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">
-                Specialisation
+                primary_task
               </p>
               <p className="mt-2 font-display text-lg font-normal text-white">
                 Retrieval-heavy AI systems with production constraints

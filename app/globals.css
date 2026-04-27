@@ -68,6 +68,17 @@ a {
   line-height: 1.25;
 }
 
+.section-title::before {
+  content: "## ";
+  font-family: var(--font-mono), monospace;
+  font-size: 0.6em;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--accent);
+  opacity: 0.7;
+  vertical-align: middle;
+}
+
 .surface-card {
   background: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(255, 255, 255, 0.07);
@@ -84,5 +95,5 @@ a {
   right: 0;
   top: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  background: rgba(255, 255, 255, 0.07);
 }

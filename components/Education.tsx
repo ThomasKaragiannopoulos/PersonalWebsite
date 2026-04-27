@@ -10,7 +10,7 @@ export function Education() {
       className="section-divider scroll-mt-24 py-20 sm:py-24"
     >
       <div className="mb-12 max-w-3xl pt-10">
-        <h2 className="section-title text-white">Education</h2>
+        <h2 className="section-title text-white">Training Data</h2>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
