@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { type ChangeEvent, useMemo, useState } from "react";
-import { RevealItem, RevealList, RevealSection } from "@/components/Reveal";
+import { HoverCard, RevealItem, RevealList, RevealSection } from "@/components/Reveal";
 import { clearAdminSettings, defaultBaseUrl, getAdminSettings, saveAdminSettings } from "@/lib/gateway/storage";
 import { healthFetch } from "@/lib/gateway/client";
 import type { AdminSettings } from "@/lib/gateway/types";
@@ -12,34 +12,58 @@ type HealthState = "idle" | "checking" | "ok" | "error";
 const DEMO_ADMIN_KEY = process.env.NEXT_PUBLIC_DEMO_ADMIN_KEY ?? "";
 const DEMO_BASE_URL = process.env.NEXT_PUBLIC_DEMO_BASE_URL ?? "";
 
-const dashboardLinks = [
-  {
-    href: "/pp1/chat",
-    title: "Chat Playground",
-    detail: "Validate tenant routing, cache, and RAG headers.",
-  },
-  {
-    href: "/pp1/keys",
-    title: "Key Management",
-    detail: "Create, import, list, and revoke tenant keys.",
-  },
-  {
-    href: "/pp1/tenants",
-    title: "Tenant Explorer",
-    detail: "Browse tenants, usage, limits, and key inventory.",
-  },
-  {
-    href: "/pp1/admin",
-    title: "Admin Controls",
-    detail: "RAG settings, ingest, evals, audit log, and rotation.",
-  },
-] as const;
-
 const healthTargets = [
   { label: "API", path: "/health" },
   { label: "Grafana", path: "/health/grafana" },
   { label: "Prometheus", path: "/health/prometheus" },
   { label: "Ollama", path: "/health/ollama" },
+] as const;
+
+const repoTabs = ["App", "Files", "README", "Community"] as const;
+const capabilityChips = ["Multi-tenant controls", "Model gateway", "Observability", "RAG-ready"] as const;
+const capabilityPoints = [
+  "Tenant-scoped access, quotas, and workspace isolation.",
+  "FastAPI gateway in front of local or hosted models.",
+  "Health checks, Prometheus, and Grafana for visibility.",
+  "Retrieval-ready surface for grounded AI workflows.",
+] as const;
+const showcaseSteps = [
+  {
+    number: "01",
+    title: "Load demo access",
+    description:
+      "Use the session panel to load the preconfigured local credentials and initialize the gateway session.",
+  },
+  {
+    number: "02",
+    title: "Save and check",
+    description:
+      "Confirm the base URL and admin key, then run the health checks to verify the stack is reachable.",
+  },
+  {
+    number: "03",
+    title: "Create a tenant",
+    description:
+      "Open /pp1/tenants and create a workspace that will own requests, limits, and access policies.",
+  },
+  {
+    number: "04",
+    title: "Generate a key",
+    description:
+      "Create a tenant-scoped key in /pp1/keys and copy the secret when it is shown.",
+  },
+  {
+    number: "05",
+    title: "Send a request",
+    description:
+      "Use /pp1/chat to run a prompt through the gateway and confirm the request completes end to end.",
+  },
+  {
+    number: "06",
+    title: "Inspect the system",
+    description:
+      "Review the status panel and admin surfaces to validate visibility, isolation, and operator controls.",
+  },
 ] as const;
 
 function toneClass(state: HealthState) {
@@ -53,6 +77,32 @@ function toneClass(state: HealthState) {
     return "border-white/12 bg-white/[0.05] text-white";
   }
   return "border-white/8 bg-white/[0.03] text-[var(--muted)]";
+}
+
+function healthLabel(state: HealthState) {
+  if (state === "ok") {
+    return "Online";
+  }
+  if (state === "error") {
+    return "Unavailable";
+  }
+  if (state === "checking") {
+    return "Checking";
+  }
+  return "Idle";
+}
+
+function healthDotClass(state: HealthState) {
+  if (state === "ok") {
+    return "bg-[var(--accent)] shadow-[0_0_14px_var(--accent-glow)]";
+  }
+  if (state === "error") {
+    return "bg-red-400 shadow-[0_0_14px_rgba(248,113,113,0.28)]";
+  }
+  if (state === "checking") {
+    return "bg-white/70";
+  }
+  return "bg-white/25";
 }
 
 export default function PP1DashboardPage() {
@@ -73,6 +123,8 @@ export default function PP1DashboardPage() {
   });
 
   const baseUrl = useMemo(() => settings.baseUrl.trim().replace(/\/$/, ""), [settings.baseUrl]);
+  const hasAdminKey = settings.adminKey.trim().length > 0;
+  const sessionReady = Boolean(baseUrl && hasAdminKey);
 
   async function runHealthChecks(current: AdminSettings) {
     const trimmed = current.baseUrl.trim().replace(/\/$/, "");
@@ -137,188 +189,328 @@ export default function PP1DashboardPage() {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-6 pb-16 pt-10 sm:px-8 lg:px-12">
-      <RevealSection className="pb-20">
-        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]">
-          <div className="surface-card rounded-xl p-6 sm:p-8">
-            <p className="section-kicker">PP1 Console</p>
-            <h1 className="mt-4 font-display text-4xl text-white sm:text-5xl">
-              LLM Gateway frontend, migrated into the site shell.
-            </h1>
-            <p className="mt-5 max-w-3xl text-base leading-8 text-[var(--foreground)]/78">
-              Control plane for tenant isolation, API key hygiene, retrieval settings, evals, and
-              live prompt verification. Teal stays local to this route tree.
-            </p>
-            <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              {dashboardLinks.map((item) => (
+      <RevealSection className="pb-10">
+        <div className="rounded-[1.35rem] border border-white/8 bg-[#0f1317] shadow-[0_24px_80px_rgba(0,0,0,0.28)]">
+          <div className="border-b border-white/8 px-5 py-5 sm:px-7">
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--accent)]/20 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">
+                TK
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--muted)]">
+                  thkaragi / spaces
+                </p>
+                <div className="mt-1 flex flex-wrap items-center gap-2">
+                  <h1 className="font-sans text-2xl font-semibold tracking-[-0.03em] text-white sm:text-3xl">
+                    pp1-llm-gateway
+                  </h1>
+                  <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs text-[var(--muted)]">
+                    Space
+                  </span>
+                  <span className="rounded-full border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-2.5 py-1 text-xs font-medium text-[var(--accent)]">
+                    Running
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2">
                 <Link
-                  key={item.href}
-                  href={item.href}
-                  className="rounded-lg border border-white/8 bg-white/[0.03] p-4 transition-colors hover:border-[var(--accent)]/30 hover:bg-[var(--accent-soft)]"
+                  href="/pp1/chat"
+                  className="rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[var(--accent)] hover:bg-[rgba(32,201,151,0.2)]"
                 >
-                  <p className="font-semibold text-white">{item.title}</p>
-                  <p className="mt-2 text-sm leading-7 text-[var(--muted)]">{item.detail}</p>
+                  Use Space
                 </Link>
+                <Link
+                  href="/#projects"
+                  className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-[var(--foreground)]/80 transition-colors hover:border-white/20 hover:text-white"
+                >
+                  Back to Portfolio
+                </Link>
+              </div>
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              {repoTabs.map((tab, index) => (
+                <div
+                  key={tab}
+                  className={`rounded-full px-3.5 py-1.5 text-sm ${
+                    index === 0
+                      ? "border border-white/10 bg-white/[0.06] text-white"
+                      : "border border-transparent bg-transparent text-[var(--muted)]"
+                  }`}
+                >
+                  {tab}
+                </div>
               ))}
             </div>
           </div>
 
-          <div className="surface-card rounded-xl p-6 sm:p-8">
-            <p className="section-kicker">Session</p>
-            <h2 className="mt-4 font-display text-3xl text-white">Gateway settings</h2>
-            <p className="mt-4 text-sm leading-7 text-[var(--muted)]">
-              Stored locally in your browser. The admin key unlocks the downstream pages.
-            </p>
-            {DEMO_ADMIN_KEY && (
-              <div className="mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-[var(--accent)]/20 bg-[var(--accent-soft)] px-4 py-3">
-                <p className="text-sm text-[var(--muted)]">Demo credentials available —</p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const newSettings = {
-                      baseUrl: DEMO_BASE_URL || settings.baseUrl,
-                      adminKey: DEMO_ADMIN_KEY,
-                    };
-                    void navigator.clipboard.writeText(DEMO_ADMIN_KEY);
-                    setSettings(newSettings);
-                    saveAdminSettings(newSettings);
-                    void runHealthChecks(newSettings);
-                    setKeyCopied(true);
-                    setTimeout(() => setKeyCopied(false), 2000);
-                  }}
-                  className="rounded-full border border-[var(--accent)]/40 bg-[var(--accent-soft)] px-4 py-1.5 text-sm font-semibold text-[var(--accent)]"
-                >
-                  {keyCopied ? "Copied!" : "Copy admin key"}
-                </button>
-              </div>
-            )}
-            <div className="mt-8 space-y-5">
-              <label className="block">
-                <span className="mb-2 block text-sm text-[var(--muted)]">Base URL</span>
-                <input
-                  name="baseUrl"
-                  value={settings.baseUrl}
-                  onChange={handleFieldChange}
-                  placeholder="http://localhost:8000"
-                  className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-white outline-none transition-colors focus:border-[var(--accent)]/40"
-                />
-              </label>
-              <label className="block">
-                <span className="mb-2 block text-sm text-[var(--muted)]">Admin API Key</span>
-                <input
-                  name="adminKey"
-                  type="password"
-                  value={settings.adminKey}
-                  onChange={handleFieldChange}
-                  placeholder="sk-admin-..."
-                  className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-white outline-none transition-colors focus:border-[var(--accent)]/40"
-                />
-              </label>
-              <div className="flex flex-wrap gap-3">
-                <button
-                  type="button"
-                  onClick={handleSave}
-                  className="rounded-full border border-[var(--accent)]/40 bg-[var(--accent-soft)] px-5 py-3 text-sm font-semibold text-white"
-                >
-                  Save & Check
-                </button>
-                <button
-                  type="button"
-                  onClick={handleClear}
-                  className="rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-sm text-[var(--foreground)]/80"
-                >
-                  Clear
-                </button>
-                <button
-                  type="button"
-                  onClick={() => void runHealthChecks(settings)}
-                  className="rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-sm text-[var(--foreground)]/80"
-                >
-                  Refresh Health
-                </button>
-              </div>
-              <p className="text-sm text-[var(--muted)]">{status}</p>
-              <p className="font-mono text-xs text-[var(--foreground)]/55">
-                {baseUrl || "No base URL configured"}
-              </p>
-            </div>
-          </div>
-        </div>
-      </RevealSection>
-
-      <RevealSection className="section-divider pb-10">
-        <div className="pt-12 sm:pt-16">
-          <p className="section-kicker">Quick Start</p>
-          <h2 className="mt-4 section-title text-white">Getting started.</h2>
-          <p className="mt-4 text-base leading-8 text-[var(--muted)]">
-            Follow these steps in order to go from zero to a live request.
-          </p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <div className="flex gap-4 rounded-xl border border-white/8 bg-white/[0.03] p-5">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">1</div>
-              <div>
-                <p className="font-semibold text-white">Get your admin API key</p>
-                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-                  Use the <strong className="text-white">Copy admin key</strong> button in the Session form — it pre-fills both the URL and key for you. If that button is not visible, the demo credentials are not configured.
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-4 rounded-xl border border-white/8 bg-white/[0.03] p-5">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">2</div>
-              <div>
-                <p className="font-semibold text-white">Create a tenant</p>
-                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">Go to <Link href="/pp1/tenants" className="inline-flex items-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent)]">Tenants</Link>, enter a name (e.g. <code className="rounded bg-white/10 px-1 font-mono text-xs">acme-labs</code>) and select a tier, then click <strong className="text-white">Create Tenant</strong>. Tenants are isolated namespaces — each gets its own keys, quotas, and usage tracking.</p>
-              </div>
-            </div>
-            <div className="flex gap-4 rounded-xl border border-white/8 bg-white/[0.03] p-5">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">3</div>
-              <div>
-                <p className="font-semibold text-white">Generate a key</p>
-                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">Go to <Link href="/pp1/keys" className="inline-flex items-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent)]">Keys</Link>, select your tenant, enter a key name (e.g. <code className="rounded bg-white/10 px-1 font-mono text-xs">prod-default</code>), click <strong className="text-white">Generate Key</strong>, and copy it immediately — it is only shown once and cannot be recovered.</p>
-              </div>
-            </div>
-            <div className="flex gap-4 rounded-xl border border-white/8 bg-white/[0.03] p-5">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">4</div>
-              <div>
-                <p className="font-semibold text-white">Send a prompt</p>
-                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">Go to <Link href="/pp1/chat" className="inline-flex items-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent)]">Chat</Link>, click <strong className="text-white">Fetch Tenants</strong>, select your tenant and key, type a prompt, and click <strong className="text-white">Send</strong>. The response panel shows the message thread and the RAG Inspector shows routing headers.</p>
-              </div>
-            </div>
-            <div className="flex gap-4 rounded-xl border border-white/8 bg-white/[0.03] p-5">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">5</div>
-              <div>
-                <p className="font-semibold text-white">Set tenant limits</p>
-                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">In <Link href="/pp1/tenants" className="inline-flex items-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent)]">Tenants</Link>, click a row to select a tenant, then use <strong className="text-white">Set Limits</strong> to enforce a daily token budget and spend cap (USD). Leave blank for unlimited.</p>
-              </div>
-            </div>
-            <div className="flex gap-4 rounded-xl border border-white/8 bg-white/[0.03] p-5">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">6</div>
-              <div>
-                <p className="font-semibold text-white">Explore Admin controls</p>
-                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">Go to <Link href="/pp1/admin" className="inline-flex items-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent)]">Admin</Link> for RAG settings (toggle on/off, top-K, reranking), document ingestion into the vector store, the offline eval runner, the audit log, and admin key rotation.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </RevealSection>
-
-      <RevealSection className="section-divider pb-10">
-        <div className="pt-12 sm:pt-16">
-          <div className="mb-10">
-            <h2 className="section-title text-white">Health Surface</h2>
-          </div>
-          <RevealList className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {healthTargets.map((target) => (
-              <RevealItem key={target.label}>
-                <div className={`rounded-xl border p-5 ${toneClass(health[target.label] || "idle")}`}>
-                  <p className="section-kicker">{target.label}</p>
-                  <p className="mt-4 font-display text-3xl capitalize">
-                    {health[target.label] || "idle"}
+          <div className="grid gap-6 px-5 py-5 sm:px-7 sm:py-7 xl:grid-cols-[minmax(0,1fr)_320px]">
+            <div className="space-y-6">
+              <HoverCard className="overflow-hidden rounded-[1.1rem] border border-white/8 bg-[#0b0f13]">
+                <div className="flex items-center justify-between border-b border-white/8 px-5 py-3">
+                  <div className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                    <p className="text-sm font-medium text-white">App</p>
+                  </div>
+                  <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">
+                    Public demo
                   </p>
-                  <p className="mt-3 font-mono text-xs text-[var(--foreground)]/58">{target.path}</p>
                 </div>
-              </RevealItem>
-            ))}
-          </RevealList>
+
+                <div className="grid gap-8 px-5 py-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(240px,0.85fr)] lg:px-7">
+                  <div>
+                    <p className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">
+                      AI infrastructure portfolio project
+                    </p>
+                    <h2 className="mt-4 font-sans text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
+                      Multi-tenant LLM gateway with observability and retrieval hooks
+                    </h2>
+                    <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--foreground)]/78">
+                      Self-hosted model gateway focused on tenant isolation, operational visibility, and production-style
+                      control over AI requests.
+                    </p>
+
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      {capabilityChips.map((chip) => (
+                        <span
+                          key={chip}
+                          className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-[var(--muted)]"
+                        >
+                          {chip}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="mt-8 flex flex-wrap gap-3">
+                      <Link
+                        href="/pp1/chat"
+                        className="rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[var(--accent)] hover:bg-[rgba(32,201,151,0.2)]"
+                      >
+                        Launch chat
+                      </Link>
+                      <Link
+                        href="/pp1/admin"
+                        className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-[var(--foreground)]/80 transition-colors hover:border-white/20 hover:text-white"
+                      >
+                        Open admin
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5">
+                    <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--muted)]">
+                      Why this is interesting
+                    </p>
+                    <ul className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
+                      {capabilityPoints.map((point) => (
+                        <li key={point} className="flex gap-3">
+                          <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </HoverCard>
+
+              <div className="rounded-[1.1rem] border border-white/8 bg-[#0b0f13]">
+                <div className="border-b border-white/8 px-5 py-3">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--muted)]">
+                    README.md
+                  </p>
+                </div>
+                <div className="px-5 py-6 sm:px-7">
+                  <div className="max-w-3xl">
+                    <h2 className="font-sans text-2xl font-semibold tracking-[-0.03em] text-white">
+                      How to use it
+                    </h2>
+                    <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                      Follow the full gateway flow from session setup to tenant testing and system inspection.
+                    </p>
+                  </div>
+
+                  <RevealList className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                    {showcaseSteps.map((step) => (
+                      <RevealItem key={step.number}>
+                        <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5">
+                          <p className="font-mono text-xs text-[var(--accent)]">{step.number}</p>
+                          <p className="mt-3 font-semibold text-white">{step.title}</p>
+                          <p className="mt-2 text-sm leading-7 text-[var(--muted)]">{step.description}</p>
+                        </div>
+                      </RevealItem>
+                    ))}
+                  </RevealList>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="overflow-hidden rounded-[1.1rem] border border-white/8 bg-[#0b0f13]">
+                <div className="border-b border-white/8 px-5 py-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--muted)]">
+                        Session
+                      </p>
+                      <h3 className="mt-2 text-lg font-semibold text-white">Gateway settings</h3>
+                    </div>
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-medium ${
+                        sessionReady
+                          ? "border border-[var(--accent)]/25 bg-[var(--accent-soft)] text-[var(--accent)]"
+                          : "border border-white/10 bg-white/[0.04] text-[var(--muted)]"
+                      }`}
+                    >
+                      {sessionReady ? "Configured" : "Needs setup"}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                    Configure the local session used to test and inspect the gateway.
+                  </p>
+                </div>
+
+                <div className="space-y-4 px-5 py-5">
+                  {DEMO_ADMIN_KEY && (
+                    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--accent)]/18 bg-[linear-gradient(180deg,rgba(32,201,151,0.14),rgba(32,201,151,0.08))] p-4">
+                      <div>
+                        <p className="text-sm font-medium text-white">Demo access</p>
+                        <p className="mt-1 text-sm leading-6 text-[var(--muted)]">
+                          Load a preconfigured session for the local demo.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newSettings = {
+                            baseUrl: DEMO_BASE_URL || settings.baseUrl,
+                            adminKey: DEMO_ADMIN_KEY,
+                          };
+                          void navigator.clipboard.writeText(DEMO_ADMIN_KEY);
+                          setSettings(newSettings);
+                          saveAdminSettings(newSettings);
+                          void runHealthChecks(newSettings);
+                          setKeyCopied(true);
+                          setTimeout(() => setKeyCopied(false), 2000);
+                        }}
+                        className="rounded-full border border-[var(--accent)]/40 bg-[var(--accent-soft)] px-4 py-2 text-sm font-semibold text-[var(--accent)]"
+                      >
+                        {keyCopied ? "Loaded" : "Load demo access"}
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
+                    <div className="grid gap-4">
+                      <label className="block">
+                        <span className="mb-2 block text-sm text-[var(--muted)]">Base URL</span>
+                        <input
+                          name="baseUrl"
+                          value={settings.baseUrl}
+                          onChange={handleFieldChange}
+                          placeholder="http://localhost:8000"
+                          className="w-full rounded-xl border border-white/10 bg-[#0e1318] px-4 py-3 text-white outline-none transition-colors focus:border-[var(--accent)]/40"
+                        />
+                      </label>
+                      <label className="block">
+                        <span className="mb-2 block text-sm text-[var(--muted)]">Admin API Key</span>
+                        <input
+                          name="adminKey"
+                          type="password"
+                          value={settings.adminKey}
+                          onChange={handleFieldChange}
+                          placeholder="sk-admin-..."
+                          className="w-full rounded-xl border border-white/10 bg-[#0e1318] px-4 py-3 text-white outline-none transition-colors focus:border-[var(--accent)]/40"
+                        />
+                      </label>
+                    </div>
+
+                    <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                      <div className="rounded-xl border border-white/8 bg-[#0e1318] px-4 py-3">
+                        <p className="text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">
+                          Endpoint
+                        </p>
+                        <p className="mt-2 truncate font-mono text-xs text-[var(--foreground)]/72">
+                          {baseUrl || "Not configured"}
+                        </p>
+                      </div>
+                      <div className="rounded-xl border border-white/8 bg-[#0e1318] px-4 py-3">
+                        <p className="text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">
+                          Admin key
+                        </p>
+                        <p className="mt-2 text-xs text-[var(--foreground)]/72">
+                          {hasAdminKey ? "Loaded in current session" : "Missing"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={handleSave}
+                        className="rounded-full border border-[var(--accent)]/40 bg-[var(--accent-soft)] px-5 py-3 text-sm font-semibold text-white"
+                      >
+                        Save and check
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => void runHealthChecks(settings)}
+                        className="rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-sm text-[var(--foreground)]/80"
+                      >
+                        Refresh health
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleClear}
+                        className="rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-sm text-[var(--foreground)]/80"
+                      >
+                        Clear session
+                      </button>
+                    </div>
+                    <div className="mt-4 rounded-xl border border-white/8 bg-[#0e1318] p-4">
+                      <p className="text-sm text-[var(--muted)]">{status}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-[1.1rem] border border-white/8 bg-[#0b0f13] p-5">
+                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--muted)]">
+                  System status
+                </p>
+                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
+                  Health signals for the gateway stack tied to the current session.
+                </p>
+                <RevealList className="mt-4 grid gap-3">
+                  {healthTargets.map((target) => (
+                    <RevealItem key={target.label}>
+                      <div className={`rounded-xl border px-4 py-3 ${toneClass(health[target.label] || "idle")}`}>
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex min-w-0 items-center gap-3">
+                            <span
+                              className={`h-2.5 w-2.5 shrink-0 rounded-full ${healthDotClass(
+                                health[target.label] || "idle",
+                              )}`}
+                            />
+                            <div className="min-w-0">
+                              <p className="text-sm font-medium text-white">{target.label}</p>
+                              <p className="mt-0.5 truncate font-mono text-[11px] text-[var(--foreground)]/50">
+                                {target.path}
+                              </p>
+                            </div>
+                          </div>
+                          <p className="shrink-0 text-xs font-medium text-[var(--foreground)]/72">
+                            {healthLabel(health[target.label] || "idle")}
+                          </p>
+                        </div>
+                      </div>
+                    </RevealItem>
+                  ))}
+                </RevealList>
+              </div>
+            </div>
+          </div>
         </div>
       </RevealSection>
     </div>
