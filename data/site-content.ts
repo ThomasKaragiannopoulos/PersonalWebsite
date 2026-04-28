@@ -113,7 +113,7 @@ export const projects: ProjectEntry[] = [
     bullets: [
       "Circuit breakers, rate limiting, and per-tenant quotas",
       "Docker Compose stack with Prometheus and Grafana",
-      "SSE streaming responses and integrated RAG pipeline",
+      "SSE streaming with provider fallback and semantic cache",
     ],
     href: "/pp1",
     linkLabel: "Open UI",

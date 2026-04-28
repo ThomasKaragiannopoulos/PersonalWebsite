@@ -27,13 +27,6 @@ export type UsageStats = {
   cost_usd: number;
 };
 
-export type RAGSettings = {
-  enabled: boolean;
-  top_k: number;
-  max_context_chars: number;
-  rerank: boolean;
-};
-
 export type AuditAction = {
   timestamp: string;
   actor: string;

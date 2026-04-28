@@ -20,12 +20,12 @@ const healthTargets = [
 ] as const;
 
 const repoTabs = ["App", "Files", "README", "Community"] as const;
-const capabilityChips = ["Multi-tenant controls", "Model gateway", "Observability", "RAG-ready"] as const;
+const capabilityChips = ["Multi-tenant controls", "Model gateway", "Observability", "Operator tooling"] as const;
 const capabilityPoints = [
   "Tenant-scoped access, quotas, and workspace isolation.",
   "FastAPI gateway in front of local or hosted models.",
   "Health checks, Prometheus, and Grafana for visibility.",
-  "Retrieval-ready surface for grounded AI workflows.",
+  "Admin surfaces for testing, inspection, and operational control.",
 ] as const;
 const showcaseSteps = [
   {
@@ -263,7 +263,7 @@ export default function PP1DashboardPage() {
                       AI infrastructure portfolio project
                     </p>
                     <h2 className="mt-4 font-sans text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
-                      Multi-tenant LLM gateway with observability and retrieval hooks
+                      Multi-tenant LLM gateway with observability and operator controls
                     </h2>
                     <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--foreground)]/78">
                       Self-hosted model gateway focused on tenant isolation, operational visibility, and production-style

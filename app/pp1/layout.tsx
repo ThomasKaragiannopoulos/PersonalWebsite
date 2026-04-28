@@ -12,7 +12,6 @@ const navItems = [
   { href: "/pp1/chat", label: "Chat" },
   { href: "/pp1/keys", label: "Keys" },
   { href: "/pp1/tenants", label: "Tenants" },
-  { href: "/pp1/admin", label: "Admin" },
 ] as const;
 
 export default function PP1Layout({ children }: { children: ReactNode }) {
