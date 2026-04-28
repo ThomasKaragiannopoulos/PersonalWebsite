@@ -34,6 +34,7 @@ export default function PP1ChatPage() {
   const [selectedKey, setSelectedKey] = useState("");
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
+  const [hasAdminSession] = useState(() => !!(getAdminSettings()?.adminKey?.trim()));
   const [sessionStatus, setSessionStatus] = useState("Admin session required to load tenants.");
   const [chatStatus, setChatStatus] = useState("");
   const [responseMeta, setResponseMeta] = useState("No response yet.");
@@ -78,7 +79,6 @@ export default function PP1ChatPage() {
   async function refreshKeysForTenant(tenant: string) {
     const storedKeys = getStoredKeys();
     const settings = getAdminSettings();
-    setAdminSettings(settings);
 
     if (!tenant) {
       setAvailableKeys([]);
@@ -245,6 +245,15 @@ export default function PP1ChatPage() {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-6 pb-16 pt-10 sm:px-8 lg:px-12">
+      {!hasAdminSession && (
+        <div className="mb-6 rounded-2xl border border-amber-400/20 bg-amber-400/[0.08] px-5 py-4 text-sm text-amber-200">
+          No admin session found.{" "}
+          <a href="/pp1" className="text-[var(--accent)] underline">
+            Set it up on the Overview page
+          </a>{" "}
+          — the Tenant and Key dropdowns require it.
+        </div>
+      )}
       <RevealSection className="pb-20">
         <div className="surface-card rounded-2xl p-8 sm:p-10">
           <p className="section-kicker">Tenant Chat</p>

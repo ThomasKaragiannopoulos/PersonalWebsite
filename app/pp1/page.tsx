@@ -9,6 +9,9 @@ import type { AdminSettings } from "@/lib/gateway/types";
 
 type HealthState = "idle" | "checking" | "ok" | "error";
 
+const DEMO_ADMIN_KEY = process.env.NEXT_PUBLIC_DEMO_ADMIN_KEY ?? "";
+const DEMO_BASE_URL = process.env.NEXT_PUBLIC_DEMO_BASE_URL ?? "";
+
 const dashboardLinks = [
   {
     href: "/pp1/chat",
@@ -61,6 +64,7 @@ export default function PP1DashboardPage() {
       },
   );
   const [status, setStatus] = useState("Local session only.");
+  const [keyCopied, setKeyCopied] = useState(false);
   const [health, setHealth] = useState<Record<string, HealthState>>({
     API: "idle",
     Grafana: "idle",
@@ -135,7 +139,7 @@ export default function PP1DashboardPage() {
     <div className="mx-auto w-full max-w-7xl px-6 pb-16 pt-10 sm:px-8 lg:px-12">
       <RevealSection className="pb-20">
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]">
-          <div className="surface-card rounded-2xl p-8 sm:p-10">
+          <div className="surface-card rounded-xl p-6 sm:p-8">
             <p className="section-kicker">PP1 Console</p>
             <h1 className="mt-4 font-display text-4xl text-white sm:text-5xl">
               LLM Gateway frontend, migrated into the site shell.
@@ -149,7 +153,7 @@ export default function PP1DashboardPage() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded-xl border border-white/8 bg-white/[0.03] p-4 transition-colors hover:border-[var(--accent)]/30 hover:bg-[var(--accent-soft)]"
+                  className="rounded-lg border border-white/8 bg-white/[0.03] p-4 transition-colors hover:border-[var(--accent)]/30 hover:bg-[var(--accent-soft)]"
                 >
                   <p className="font-semibold text-white">{item.title}</p>
                   <p className="mt-2 text-sm leading-7 text-[var(--muted)]">{item.detail}</p>
@@ -158,12 +162,35 @@ export default function PP1DashboardPage() {
             </div>
           </div>
 
-          <div className="surface-card rounded-2xl p-8 sm:p-10">
+          <div className="surface-card rounded-xl p-6 sm:p-8">
             <p className="section-kicker">Session</p>
             <h2 className="mt-4 font-display text-3xl text-white">Gateway settings</h2>
             <p className="mt-4 text-sm leading-7 text-[var(--muted)]">
               Stored locally in your browser. The admin key unlocks the downstream pages.
             </p>
+            {DEMO_ADMIN_KEY && (
+              <div className="mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-[var(--accent)]/20 bg-[var(--accent-soft)] px-4 py-3">
+                <p className="text-sm text-[var(--muted)]">Demo credentials available —</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newSettings = {
+                      baseUrl: DEMO_BASE_URL || settings.baseUrl,
+                      adminKey: DEMO_ADMIN_KEY,
+                    };
+                    void navigator.clipboard.writeText(DEMO_ADMIN_KEY);
+                    setSettings(newSettings);
+                    saveAdminSettings(newSettings);
+                    void runHealthChecks(newSettings);
+                    setKeyCopied(true);
+                    setTimeout(() => setKeyCopied(false), 2000);
+                  }}
+                  className="rounded-full border border-[var(--accent)]/40 bg-[var(--accent-soft)] px-4 py-1.5 text-sm font-semibold text-[var(--accent)]"
+                >
+                  {keyCopied ? "Copied!" : "Copy admin key"}
+                </button>
+              </div>
+            )}
             <div className="mt-8 space-y-5">
               <label className="block">
                 <span className="mb-2 block text-sm text-[var(--muted)]">Base URL</span>
@@ -220,13 +247,69 @@ export default function PP1DashboardPage() {
 
       <RevealSection className="section-divider pb-10">
         <div className="pt-12 sm:pt-16">
+          <p className="section-kicker">Quick Start</p>
+          <h2 className="mt-4 section-title text-white">Getting started.</h2>
+          <p className="mt-4 text-base leading-8 text-[var(--muted)]">
+            Follow these steps in order to go from zero to a live request.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            <div className="flex gap-4 rounded-xl border border-white/8 bg-white/[0.03] p-5">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">1</div>
+              <div>
+                <p className="font-semibold text-white">Get your admin API key</p>
+                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
+                  Use the <strong className="text-white">Copy admin key</strong> button in the Session form — it pre-fills both the URL and key for you. If that button is not visible, the demo credentials are not configured.
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-4 rounded-xl border border-white/8 bg-white/[0.03] p-5">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">2</div>
+              <div>
+                <p className="font-semibold text-white">Create a tenant</p>
+                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">Go to <Link href="/pp1/tenants" className="inline-flex items-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent)]">Tenants</Link>, enter a name (e.g. <code className="rounded bg-white/10 px-1 font-mono text-xs">acme-labs</code>) and select a tier, then click <strong className="text-white">Create Tenant</strong>. Tenants are isolated namespaces — each gets its own keys, quotas, and usage tracking.</p>
+              </div>
+            </div>
+            <div className="flex gap-4 rounded-xl border border-white/8 bg-white/[0.03] p-5">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">3</div>
+              <div>
+                <p className="font-semibold text-white">Generate a key</p>
+                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">Go to <Link href="/pp1/keys" className="inline-flex items-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent)]">Keys</Link>, select your tenant, enter a key name (e.g. <code className="rounded bg-white/10 px-1 font-mono text-xs">prod-default</code>), click <strong className="text-white">Generate Key</strong>, and copy it immediately — it is only shown once and cannot be recovered.</p>
+              </div>
+            </div>
+            <div className="flex gap-4 rounded-xl border border-white/8 bg-white/[0.03] p-5">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">4</div>
+              <div>
+                <p className="font-semibold text-white">Send a prompt</p>
+                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">Go to <Link href="/pp1/chat" className="inline-flex items-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent)]">Chat</Link>, click <strong className="text-white">Fetch Tenants</strong>, select your tenant and key, type a prompt, and click <strong className="text-white">Send</strong>. The response panel shows the message thread and the RAG Inspector shows routing headers.</p>
+              </div>
+            </div>
+            <div className="flex gap-4 rounded-xl border border-white/8 bg-white/[0.03] p-5">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">5</div>
+              <div>
+                <p className="font-semibold text-white">Set tenant limits</p>
+                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">In <Link href="/pp1/tenants" className="inline-flex items-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent)]">Tenants</Link>, click a row to select a tenant, then use <strong className="text-white">Set Limits</strong> to enforce a daily token budget and spend cap (USD). Leave blank for unlimited.</p>
+              </div>
+            </div>
+            <div className="flex gap-4 rounded-xl border border-white/8 bg-white/[0.03] p-5">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">6</div>
+              <div>
+                <p className="font-semibold text-white">Explore Admin controls</p>
+                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">Go to <Link href="/pp1/admin" className="inline-flex items-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-0.5 text-xs font-semibold text-[var(--accent)]">Admin</Link> for RAG settings (toggle on/off, top-K, reranking), document ingestion into the vector store, the offline eval runner, the audit log, and admin key rotation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </RevealSection>
+
+      <RevealSection className="section-divider pb-10">
+        <div className="pt-12 sm:pt-16">
           <div className="mb-10">
             <h2 className="section-title text-white">Health Surface</h2>
           </div>
           <RevealList className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {healthTargets.map((target) => (
               <RevealItem key={target.label}>
-                <div className={`rounded-2xl border p-5 ${toneClass(health[target.label] || "idle")}`}>
+                <div className={`rounded-xl border p-5 ${toneClass(health[target.label] || "idle")}`}>
                   <p className="section-kicker">{target.label}</p>
                   <p className="mt-4 font-display text-3xl capitalize">
                     {health[target.label] || "idle"}

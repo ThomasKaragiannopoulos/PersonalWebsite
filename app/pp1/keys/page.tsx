@@ -35,6 +35,7 @@ export default function PP1KeysPage() {
   const [createTenant, setCreateTenant] = useState("");
   const [createKeyName, setCreateKeyName] = useState("");
   const [latestKey, setLatestKey] = useState("No key generated yet.");
+  const [showCopyWarning, setShowCopyWarning] = useState(false);
   const [listTenant, setListTenant] = useState("");
   const [tenantKeys, setTenantKeys] = useState<AdminKeyRecord[]>([]);
   const [keysStatus, setKeysStatus] = useState("");
@@ -111,6 +112,7 @@ export default function PP1KeysPage() {
       );
 
       setLatestKey(result.api_key);
+      setShowCopyWarning(true);
       upsertStoredKey({
         tenant: result.tenant,
         name: result.name,
@@ -260,12 +262,27 @@ export default function PP1KeysPage() {
             </div>
             <div className="mt-6 flex gap-3">
               <button type="button" onClick={() => void createKey()} className={primaryButtonClassName}>Generate Key</button>
-              <button type="button" onClick={() => navigator.clipboard.writeText(latestKey)} className={ghostButtonClassName} disabled={latestKey === "No key generated yet."}>Copy Latest</button>
+              <button
+                type="button"
+                onClick={() => {
+                  void navigator.clipboard.writeText(latestKey);
+                  setShowCopyWarning(false);
+                }}
+                className={ghostButtonClassName}
+                disabled={latestKey === "No key generated yet."}
+              >
+                Copy Latest
+              </button>
             </div>
             <div className="mt-6 rounded-2xl border border-white/8 bg-black/20 p-4">
               <p className="section-kicker">New Key</p>
               <p className="mt-3 break-all font-mono text-xs text-[var(--foreground)]/75">{latestKey}</p>
             </div>
+            {showCopyWarning && (
+              <div className="mt-3 rounded-2xl border border-amber-400/20 bg-amber-400/[0.08] px-4 py-3 text-sm text-amber-200">
+                Copy this key now — it will not be shown again after you leave or regenerate.
+              </div>
+            )}
           </section>
         </RevealItem>
 
