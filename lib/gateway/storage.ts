@@ -39,9 +39,6 @@ function removeKey(key: string) {
 }
 
 export function defaultBaseUrl() {
-  if (typeof window !== "undefined" && window.location.protocol.startsWith("http")) {
-    return window.location.origin;
-  }
   return "http://localhost:8000";
 }
 
