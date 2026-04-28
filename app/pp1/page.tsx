@@ -20,11 +20,11 @@ const healthTargets = [
 ] as const;
 
 const repoTabs = ["App", "Files", "README", "Community"] as const;
-const capabilityChips = ["Multi-tenant controls", "Model gateway", "Observability", "Operator tooling"] as const;
+const capabilityChips = ["Multi-tenant controls", "Model gateway", "FastAPI", "Ollama", "Prometheus", "Grafana", "Docker", "Operator tooling"] as const;
 const capabilityPoints = [
   "Tenant-scoped access, quotas, and workspace isolation.",
   "FastAPI gateway in front of local or hosted models.",
-  "Health checks, Prometheus, and Grafana for visibility.",
+  "End-to-end observability with health checks and metrics.",
   "Admin surfaces for testing, inspection, and operational control.",
 ] as const;
 const showcaseSteps = [
@@ -190,146 +190,116 @@ export default function PP1DashboardPage() {
   return (
     <div className="mx-auto w-full max-w-7xl px-6 pb-16 pt-10 sm:px-8 lg:px-12">
       <RevealSection className="pb-10">
-        <div className="rounded-[1.35rem] border border-white/8 bg-[#0f1317] shadow-[0_24px_80px_rgba(0,0,0,0.28)]">
-          <div className="border-b border-white/8 px-5 py-5 sm:px-7">
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--accent)]/20 bg-[var(--accent-soft)] font-mono text-sm font-semibold text-[var(--accent)]">
-                TK
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--muted)]">
-                  thkaragi / spaces
+        <div>
+          <div className="border-b border-white/8 pb-16">
+            <div className="grid gap-14 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-start">
+              <div>
+                <p className="font-mono text-sm text-[var(--muted)]">
+                  <span>pp1</span>
+                  <span className="mx-1 text-white/20">/</span>
+                  <span className="text-white">llm-gateway</span>
                 </p>
-                <div className="mt-1 flex flex-wrap items-center gap-2">
-                  <h1 className="font-sans text-2xl font-semibold tracking-[-0.03em] text-white sm:text-3xl">
-                    pp1-llm-gateway
-                  </h1>
-                  <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs text-[var(--muted)]">
-                    Space
-                  </span>
-                  <span className="rounded-full border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-2.5 py-1 text-xs font-medium text-[var(--accent)]">
-                    Running
-                  </span>
+                <h1 className="font-display mt-5 max-w-3xl text-4xl font-normal text-white sm:text-5xl lg:text-6xl">
+                  LLM Gateway
+                </h1>
+                <p className="mt-4 max-w-2xl text-lg text-[var(--muted)]">
+                  Multi-tenant model gateway with observability and operator controls.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {capabilityChips.map((chip) => (
+                    <span
+                      key={chip}
+                      className="font-mono text-[11px] rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-1 text-[var(--accent)]"
+                    >
+                      {chip}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link
+                    href="/pp1/chat"
+                    className="rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-black transition-opacity hover:opacity-90"
+                  >
+                    Launch chat
+                  </Link>
+                  <Link
+                    href="/#projects"
+                    className="rounded-full border border-white/10 bg-white/[0.03] px-5 py-2.5 text-sm text-[var(--foreground)]/80 transition-colors hover:border-white/20 hover:text-white"
+                  >
+                    Back to Portfolio
+                  </Link>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-2">
-                <Link
-                  href="/pp1/chat"
-                  className="rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[var(--accent)] hover:bg-[rgba(32,201,151,0.2)]"
-                >
-                  Use Space
-                </Link>
-                <Link
-                  href="/#projects"
-                  className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-[var(--foreground)]/80 transition-colors hover:border-white/20 hover:text-white"
-                >
-                  Back to Portfolio
-                </Link>
+              <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5">
+                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--muted)]">
+                  Why this is interesting
+                </p>
+                <ul className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
+                  {capabilityPoints.map((point) => (
+                    <li key={point} className="flex gap-3">
+                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-
-            <div className="mt-5 flex flex-wrap gap-2">
-              {repoTabs.map((tab, index) => (
-                <div
-                  key={tab}
-                  className={`rounded-full px-3.5 py-1.5 text-sm ${
-                    index === 0
-                      ? "border border-white/10 bg-white/[0.06] text-white"
-                      : "border border-transparent bg-transparent text-[var(--muted)]"
-                  }`}
-                >
-                  {tab}
-                </div>
-              ))}
             </div>
           </div>
 
-          <div className="grid gap-6 px-5 py-5 sm:px-7 sm:py-7 xl:grid-cols-[minmax(0,1fr)_320px]">
-            <div className="space-y-6">
-              <HoverCard className="overflow-hidden rounded-[1.1rem] border border-white/8 bg-[#0b0f13]">
-                <div className="flex items-center justify-between border-b border-white/8 px-5 py-3">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-                    <p className="text-sm font-medium text-white">App</p>
-                  </div>
-                  <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--muted)]">
-                    Public demo
+          <div className="space-y-6 py-8">
+              <div>
+                <p className="section-kicker">AI infrastructure portfolio project</p>
+                <h2 className="section-title mt-4 text-white">
+                  Multi-tenant LLM gateway with observability and operator controls
+                </h2>
+              </div>
+
+              <HoverCard className="overflow-hidden rounded-[1.1rem] border border-white/8 bg-white/[0.025]">
+                <div className="px-5 py-6 lg:px-7">
+                  <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--foreground)]/78">
+                    Self-hosted model gateway focused on tenant isolation, operational visibility, and production-style
+                    control over AI requests.
                   </p>
-                </div>
 
-                <div className="grid gap-8 px-5 py-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(240px,0.85fr)] lg:px-7">
-                  <div>
-                    <p className="font-mono text-xs uppercase tracking-[0.12em] text-[var(--muted)]">
-                      AI infrastructure portfolio project
-                    </p>
-                    <h2 className="mt-4 font-sans text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
-                      Multi-tenant LLM gateway with observability and operator controls
-                    </h2>
-                    <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--foreground)]/78">
-                      Self-hosted model gateway focused on tenant isolation, operational visibility, and production-style
-                      control over AI requests.
-                    </p>
-
-                    <div className="mt-6 flex flex-wrap gap-2">
-                      {capabilityChips.map((chip) => (
-                        <span
-                          key={chip}
-                          className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-[var(--muted)]"
-                        >
-                          {chip}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="mt-8 flex flex-wrap gap-3">
-                      <Link
-                        href="/pp1/chat"
-                        className="rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[var(--accent)] hover:bg-[rgba(32,201,151,0.2)]"
+                  <div className="mt-6 flex flex-wrap gap-2">
+                    {capabilityChips.map((chip) => (
+                      <span
+                        key={chip}
+                        className="font-mono text-[11px] rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-1 text-[var(--accent)]"
                       >
-                        Launch chat
-                      </Link>
-                      <Link
-                        href="/pp1/admin"
-                        className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-[var(--foreground)]/80 transition-colors hover:border-white/20 hover:text-white"
-                      >
-                        Open admin
-                      </Link>
-                    </div>
+                        {chip}
+                      </span>
+                    ))}
                   </div>
 
-                  <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5">
-                    <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--muted)]">
-                      Why this is interesting
-                    </p>
-                    <ul className="mt-4 space-y-3 text-sm leading-7 text-[var(--muted)]">
-                      {capabilityPoints.map((point) => (
-                        <li key={point} className="flex gap-3">
-                          <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
-                          <span>{point}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    <Link
+                      href="/pp1/chat"
+                      className="rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[var(--accent)] hover:bg-[rgba(32,201,151,0.2)]"
+                    >
+                      Launch chat
+                    </Link>
+                    <Link
+                      href="/pp1/admin"
+                      className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-[var(--foreground)]/80 transition-colors hover:border-white/20 hover:text-white"
+                    >
+                      Open admin
+                    </Link>
                   </div>
                 </div>
               </HoverCard>
 
-              <div className="rounded-[1.1rem] border border-white/8 bg-[#0b0f13]">
-                <div className="border-b border-white/8 px-5 py-3">
-                  <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--muted)]">
-                    README.md
-                  </p>
-                </div>
-                <div className="px-5 py-6 sm:px-7">
-                  <div className="max-w-3xl">
-                    <h2 className="font-sans text-2xl font-semibold tracking-[-0.03em] text-white">
-                      How to use it
-                    </h2>
-                    <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
-                      Follow the full gateway flow from session setup to tenant testing and system inspection.
-                    </p>
-                  </div>
+              <div>
+                <p className="section-kicker">README.md</p>
+                <h2 className="section-title mt-4 text-white">How to use it</h2>
+                <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                  Follow the full gateway flow from session setup to tenant testing and system inspection.
+                </p>
+              </div>
 
-                  <RevealList className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="rounded-[1.1rem] border border-white/8 bg-white/[0.025]">
+                <div className="px-5 py-6 sm:px-7">
+                  <RevealList className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                     {showcaseSteps.map((step) => (
                       <RevealItem key={step.number}>
                         <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5">
@@ -342,33 +312,29 @@ export default function PP1DashboardPage() {
                   </RevealList>
                 </div>
               </div>
+
+            <div>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="section-kicker">Session</p>
+                  <h3 className="section-title mt-2 text-white">Gateway settings</h3>
+                </div>
+                <span
+                  className={`rounded-full px-3 py-1 text-xs font-medium ${
+                    sessionReady
+                      ? "border border-[var(--accent)]/25 bg-[var(--accent-soft)] text-[var(--accent)]"
+                      : "border border-white/10 bg-white/[0.04] text-[var(--muted)]"
+                  }`}
+                >
+                  {sessionReady ? "Configured" : "Needs setup"}
+                </span>
+              </div>
+              <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+                Configure the local session used to test and inspect the gateway.
+              </p>
             </div>
 
-            <div className="space-y-6">
-              <div className="overflow-hidden rounded-[1.1rem] border border-white/8 bg-[#0b0f13]">
-                <div className="border-b border-white/8 px-5 py-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--muted)]">
-                        Session
-                      </p>
-                      <h3 className="mt-2 text-lg font-semibold text-white">Gateway settings</h3>
-                    </div>
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-medium ${
-                        sessionReady
-                          ? "border border-[var(--accent)]/25 bg-[var(--accent-soft)] text-[var(--accent)]"
-                          : "border border-white/10 bg-white/[0.04] text-[var(--muted)]"
-                      }`}
-                    >
-                      {sessionReady ? "Configured" : "Needs setup"}
-                    </span>
-                  </div>
-                  <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
-                    Configure the local session used to test and inspect the gateway.
-                  </p>
-                </div>
-
+            <div className="overflow-hidden rounded-[1.1rem] border border-white/8 bg-white/[0.025]">
                 <div className="space-y-4 px-5 py-5">
                   {DEMO_ADMIN_KEY && (
                     <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--accent)]/18 bg-[linear-gradient(180deg,rgba(32,201,151,0.14),rgba(32,201,151,0.08))] p-4">
@@ -475,14 +441,15 @@ export default function PP1DashboardPage() {
                 </div>
               </div>
 
-              <div className="rounded-[1.1rem] border border-white/8 bg-[#0b0f13] p-5">
-                <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--muted)]">
-                  System status
-                </p>
+              <div>
+                <p className="section-kicker">System status</p>
                 <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
                   Health signals for the gateway stack tied to the current session.
                 </p>
-                <RevealList className="mt-4 grid gap-3">
+              </div>
+
+              <div className="rounded-[1.1rem] border border-white/8 bg-white/[0.025] p-5">
+                <RevealList className="grid gap-3">
                   {healthTargets.map((target) => (
                     <RevealItem key={target.label}>
                       <div className={`rounded-xl border px-4 py-3 ${toneClass(health[target.label] || "idle")}`}>
@@ -509,7 +476,6 @@ export default function PP1DashboardPage() {
                   ))}
                 </RevealList>
               </div>
-            </div>
           </div>
         </div>
       </RevealSection>
