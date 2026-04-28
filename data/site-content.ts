@@ -5,6 +5,7 @@ type ExperienceEntry = {
   summary: string;
   projects: {
     name: string;
+    status?: string;
     detail: string;
   }[];
 };
@@ -52,20 +53,23 @@ export const experience: ExperienceEntry[] = [
     company: "Netcompany",
     period: "2025-Present",
     summary:
-      "Designing production-grade LLM and retrieval systems for enterprise legal, industrial, and geospatial workflows.",
+      "Designing production-grade LLM and retrieval systems for enterprise legal, industrial, and geospatial workflows, from rollout to maintenance.",
     projects: [
       {
         name: "Nomos",
+        status: "Friends & Family",
         detail:
           "Enterprise legal document AI platform with a translation pipeline covering 24 EU languages and a 98% acceptance rate.",
       },
       {
         name: "Halcor",
+        status: "Production",
         detail:
           "Semantic product matching pipeline that improved F1 by 23% with a three-stage retrieval and ranking architecture.",
       },
       {
         name: "TEE",
+        status: "UAT",
         detail:
           "Urban planning assistant using ArcGIS, RAG, and Oracle 23ai, reaching 92% query satisfaction in pilot usage.",
       },
@@ -79,19 +83,22 @@ export const experience: ExperienceEntry[] = [
       "Building a wine discovery platform that blends search, editorial structure, and agentic assistance for enthusiasts and producers.",
     projects: [
       {
-        name: "Platform",
+        name: "Search & Discovery",
+        status: "Live",
         detail:
           "Greek wine discovery platform indexing 500+ wineries and serving 1,000+ early users.",
       },
       {
         name: "OinoAI",
+        status: "Live",
         detail:
           "Tool-calling RAG agent with hybrid retrieval built on pgvector, full-text search, and reciprocal rank fusion.",
       },
       {
-        name: "Launch",
+        name: "Platform & Visibility",
+        status: "Live",
         detail:
-          "Public site is marked as coming soon while the product and content systems are being refined.",
+          "Product tracking, OinoAI visibility controls, deployment, and the backend workflows needed to iterate safely on prompts, retrieval, and product behavior.",
       },
     ],
   },
@@ -108,9 +115,8 @@ export const projects: ProjectEntry[] = [
       "Docker Compose stack with Prometheus and Grafana",
       "SSE streaming responses and integrated RAG pipeline",
     ],
-    href: "#",
-    linkLabel: "GitHub URL pending",
-    isPlaceholder: true,
+    href: "/pp1",
+    linkLabel: "Open UI",
   },
   {
     name: "Sisyphus 12.20.03",

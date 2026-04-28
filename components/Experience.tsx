@@ -51,7 +51,14 @@ export function Experience() {
                 {entry.projects.map((project) => (
                   <RevealItem key={`${entry.company}-${project.name}`}>
                     <div className="rounded-lg border border-white/8 bg-white/[0.03] p-4 transition-colors duration-300 hover:border-white/15">
-                      <p className="font-semibold text-white">{project.name}</p>
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <p className="font-semibold text-white">{project.name}</p>
+                        {project.status ? (
+                          <span className="font-mono rounded-full border border-[var(--accent)]/25 bg-[var(--accent-soft)] px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] text-[var(--accent)]">
+                            {project.status}
+                          </span>
+                        ) : null}
+                      </div>
                       <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
                         {project.detail}
                       </p>
