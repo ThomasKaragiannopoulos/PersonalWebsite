@@ -16,7 +16,7 @@ export function SiteHeader() {
           <a href="#experience" className="transition-colors hover:text-white">Experience</a>
           <a href="#projects" className="transition-colors hover:text-white">Projects</a>
           <a href="#skills" className="transition-colors hover:text-white">Skills</a>
-          <a href="#education" className="transition-colors hover:text-white">Training Data</a>
+          <a href="#education" className="transition-colors hover:text-white">Education</a>
           <a href="#contact" className="transition-colors hover:text-white">Contact</a>
         </nav>
 

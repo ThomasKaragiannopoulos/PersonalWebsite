@@ -6,7 +6,7 @@ const leftLinks = [
 
 const rightLinks = [
   { label: "Skills", href: "#skills" },
-  { label: "Training Data", href: "#education" },
+  { label: "Education", href: "#education" },
   { label: "Contact", href: "#contact" },
 ] as const;
 
