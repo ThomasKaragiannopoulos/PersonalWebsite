@@ -101,7 +101,7 @@ export function getChatSettings(): ChatSettings {
   return {
     baseUrl: typeof saved.baseUrl === "string" && saved.baseUrl ? saved.baseUrl : defaultBaseUrl(),
     apiKey: typeof saved.apiKey === "string" ? saved.apiKey : "",
-    model: typeof saved.model === "string" && saved.model ? saved.model : "tinyllama:latest",
+    model: typeof saved.model === "string" && saved.model ? saved.model : "mock-1",
     maxTokens: typeof saved.maxTokens === "number" ? saved.maxTokens : 256,
     temperature: typeof saved.temperature === "number" ? saved.temperature : 0.7,
   };

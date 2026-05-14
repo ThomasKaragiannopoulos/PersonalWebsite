@@ -4,7 +4,7 @@ import Link from "next/link";
 import { type ChangeEvent, useMemo, useState } from "react";
 import { RevealItem, RevealList, RevealSection } from "@/components/Reveal";
 import { clearAdminSettings, defaultBaseUrl, getAdminSettings, saveAdminSettings } from "@/lib/gateway/storage";
-import { healthFetch } from "@/lib/gateway/client";
+import { adminHealthFetch, healthFetch } from "@/lib/gateway/client";
 import type { AdminSettings } from "@/lib/gateway/types";
 
 type HealthState = "idle" | "checking" | "ok" | "error";
@@ -17,63 +17,64 @@ const healthTargets = [
   { label: "Grafana", path: "/health/grafana" },
   { label: "Prometheus", path: "/health/prometheus" },
   { label: "Ollama", path: "/health/ollama" },
+  { label: "Admin", path: "/v1/admin/keys", requiresAuth: true },
 ] as const;
 
 const capabilityChips = ["Multi-tenant controls", "Model gateway", "FastAPI", "Ollama", "Prometheus", "Grafana", "Docker", "Operator tooling"] as const;
 const capabilityPoints = [
-  "Tenant-scoped access, quotas, and workspace isolation.",
-  "FastAPI gateway in front of local or hosted models.",
-  "End-to-end observability with health checks and metrics.",
-  "Admin surfaces for testing, inspection, and operational control.",
+  "Thin transport layer over explicit service, policy, and persistence boundaries.",
+  "Tenant-scoped access, quotas, auditability, and workspace isolation.",
+  "Provider routing, fallback, streaming, and cache-aware request handling.",
+  "End-to-end observability and admin surfaces for operational control.",
 ] as const;
 const showcaseSteps = [
   {
     number: "01",
-    title: "Load demo access",
-    beforeLink: "Use the",
-    linkLabel: "session panel",
+    title: "Start from the operator edge",
+    beforeLink: "Use",
+    linkLabel: "gateway settings",
     href: "#gateway-settings",
-    afterLink: "to load the preconfigured local credentials and initialize the gateway session.",
+    afterLink: "to load the local admin session, because this project is operated through a controlled gateway surface rather than direct model access.",
   },
   {
     number: "02",
-    title: "Save and check",
-    beforeLink: "Confirm the base URL and admin key, then run the",
+    title: "Check the runtime surfaces",
+    beforeLink: "Run the",
     linkLabel: "health checks",
     href: "#system-status",
-    afterLink: "to verify the stack is reachable.",
+    afterLink: "to confirm the API, admin routes, Prometheus, Grafana, and provider dependencies are all part of the same operating stack.",
   },
   {
     number: "03",
-    title: "Create a tenant",
+    title: "Define a tenant policy boundary",
     beforeLink: "Open",
-    linkLabel: "/pp1/tenants",
-    href: "/pp1/tenants",
-    afterLink: "and create a workspace that will own requests, limits, and access policies.",
+    linkLabel: "/portfolio/pp1/tenants",
+    href: "/portfolio/pp1/tenants",
+    afterLink: "to create the isolation unit that owns quotas, request history, and policy decisions.",
   },
   {
     number: "04",
-    title: "Generate a key",
-    beforeLink: "Create a tenant-scoped key in",
-    linkLabel: "/pp1/keys",
-    href: "/pp1/keys",
-    afterLink: "and copy the secret when it is shown.",
+    title: "Mint tenant-scoped credentials",
+    beforeLink: "Use",
+    linkLabel: "/portfolio/pp1/keys",
+    href: "/portfolio/pp1/keys",
+    afterLink: "to issue API keys that force consumers through the gateway's auth, rate-limit, and quota enforcement path.",
   },
   {
     number: "05",
-    title: "Send a request",
+    title: "Exercise routing, cache, and streaming",
     beforeLink: "Use",
-    linkLabel: "/pp1/chat",
-    href: "/pp1/chat",
-    afterLink: "to run a prompt through the gateway and confirm the request completes end to end.",
+    linkLabel: "/portfolio/pp1/chat",
+    href: "/portfolio/pp1/chat",
+    afterLink: "to send traffic through the actual orchestration path: model resolution, provider fallback, cache-aware handling, and streaming responses.",
   },
   {
     number: "06",
-    title: "Inspect the system",
-    beforeLink: "Review the",
-    linkLabel: "status panel",
+    title: "Read the system like an operator",
+    beforeLink: "Return to the",
+    linkLabel: "overview surfaces",
     href: "#system-status",
-    afterLink: "and admin surfaces to validate visibility, isolation, and operator controls.",
+    afterLink: "to inspect health and admin controls as evidence that requests are observable, enforceable, and attributable per tenant.",
   },
 ] as const;
 
@@ -131,6 +132,7 @@ export default function PP1DashboardPage() {
     Grafana: "idle",
     Prometheus: "idle",
     Ollama: "idle",
+    Admin: "idle",
   });
 
   const baseUrl = useMemo(() => settings.baseUrl.trim().replace(/\/$/, ""), [settings.baseUrl]);
@@ -155,13 +157,17 @@ export default function PP1DashboardPage() {
       Grafana: "checking",
       Prometheus: "checking",
       Ollama: "checking",
+      Admin: "checking",
     });
     setStatus("Checking gateway surfaces...");
 
     const results = await Promise.all(
       healthTargets.map(async (target) => ({
         label: target.label,
-        state: await healthFetch(`${trimmed}${target.path}`),
+        state:
+          "requiresAuth" in target && target.requiresAuth
+            ? await adminHealthFetch(`${trimmed}${target.path}`, current.adminKey.trim())
+            : await healthFetch(`${trimmed}${target.path}`),
       })),
     );
 
@@ -194,6 +200,7 @@ export default function PP1DashboardPage() {
       Grafana: "idle",
       Prometheus: "idle",
       Ollama: "idle",
+      Admin: "idle",
     });
     setStatus("Gateway session cleared.");
   }
@@ -214,7 +221,7 @@ export default function PP1DashboardPage() {
                   LLM Gateway
                 </h1>
                 <p className="mt-4 max-w-2xl text-lg text-[var(--muted)]">
-                  Multi-tenant model gateway with observability and operator controls.
+                  Production-minded multi-tenant model gateway with explicit backend boundaries, policy enforcement, and operator controls.
                 </p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {capabilityChips.map((chip) => (
@@ -228,13 +235,13 @@ export default function PP1DashboardPage() {
                 </div>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link
-                    href="/pp1/chat"
+                    href="/portfolio/pp1/chat"
                     className="rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-black transition-opacity hover:opacity-90"
                   >
                     Launch chat
                   </Link>
                   <Link
-                    href="/#projects"
+                    href="/portfolio#projects"
                     className="rounded-full border border-white/10 bg-white/[0.03] px-5 py-2.5 text-sm text-[var(--foreground)]/80 transition-colors hover:border-white/20 hover:text-white"
                   >
                     Back to Portfolio
@@ -261,7 +268,7 @@ export default function PP1DashboardPage() {
               <div id="how-to-use">
                 <h2 className="section-title text-white">How to use it</h2>
                 <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
-                  Follow the full gateway flow from session setup to tenant testing and system inspection.
+                  Follow the repo through its actual control path: operator setup, tenant policy, scoped access, request orchestration, and observability.
                 </p>
               </div>
 

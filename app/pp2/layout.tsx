@@ -1,20 +1,18 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 
-const pp1Theme = {
-  "--accent": "#20c997",
-  "--accent-soft": "rgba(32, 201, 151, 0.14)",
-  "--accent-glow": "rgba(32, 201, 151, 0.28)",
+const pp2Theme = {
+  "--accent": "#f43f5e",
+  "--accent-soft": "rgba(244, 63, 94, 0.14)",
+  "--accent-glow": "rgba(244, 63, 94, 0.28)",
 } as CSSProperties;
 
 const navItems = [
-  { href: "/pp1", label: "Overview" },
-  { href: "/pp1/chat", label: "Chat" },
-  { href: "/pp1/keys", label: "Keys" },
-  { href: "/pp1/tenants", label: "Tenants" },
+  { href: "/pp2", label: "Overview" },
+  { href: "/pp2/query", label: "Query" },
 ] as const;
 
-export default function PP1Layout({ children }: { children: ReactNode }) {
+export default function PP2Layout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen">
       <div className="fixed left-0 right-0 top-0 z-40 border-b border-white/8 bg-[#0f0f0f]/95 backdrop-blur-sm">
@@ -28,7 +26,7 @@ export default function PP1Layout({ children }: { children: ReactNode }) {
           </nav>
         </div>
       </div>
-      <main className="overflow-x-clip pt-12" style={pp1Theme}>
+      <main className="overflow-x-clip pt-12" style={pp2Theme}>
         {children}
       </main>
     </div>

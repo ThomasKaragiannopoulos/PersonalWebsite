@@ -65,3 +65,14 @@ export async function healthFetch(url: string): Promise<"ok" | "error"> {
     return "error";
   }
 }
+
+export async function adminHealthFetch(url: string, adminKey: string): Promise<"ok" | "error"> {
+  try {
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${adminKey}` },
+    });
+    return response.ok ? "ok" : "error";
+  } catch {
+    return "error";
+  }
+}
