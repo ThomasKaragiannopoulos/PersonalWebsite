@@ -1,7 +1,5 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
 
 const pp1Theme = {
   "--accent": "#20c997",
@@ -19,8 +17,7 @@ const navItems = [
 export default function PP1Layout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen">
-      <SiteHeader />
-      <div className="fixed left-0 right-0 top-[52px] z-40 border-b border-white/8 bg-[#0f0f0f]/95 backdrop-blur-sm">
+      <div className="fixed left-0 right-0 top-0 z-40 border-b border-white/8 bg-[#0f0f0f]/95 backdrop-blur-sm">
         <div className="mx-auto flex max-w-7xl items-center gap-6 px-6 py-2 sm:px-8 lg:px-12">
           <nav className="flex flex-wrap items-center gap-6 text-sm text-[var(--muted)]">
             {navItems.map((item) => (
@@ -31,10 +28,9 @@ export default function PP1Layout({ children }: { children: ReactNode }) {
           </nav>
         </div>
       </div>
-      <main className="overflow-x-clip pt-[88px]" style={pp1Theme}>
+      <main className="overflow-x-clip pt-12" style={pp1Theme}>
         {children}
       </main>
-      <SiteFooter />
     </div>
   );
 }

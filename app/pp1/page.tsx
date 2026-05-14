@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { type ChangeEvent, useMemo, useState } from "react";
-import { HoverCard, RevealItem, RevealList, RevealSection } from "@/components/Reveal";
+import { RevealItem, RevealList, RevealSection } from "@/components/Reveal";
 import { clearAdminSettings, defaultBaseUrl, getAdminSettings, saveAdminSettings } from "@/lib/gateway/storage";
 import { healthFetch } from "@/lib/gateway/client";
 import type { AdminSettings } from "@/lib/gateway/types";
@@ -19,7 +19,6 @@ const healthTargets = [
   { label: "Ollama", path: "/health/ollama" },
 ] as const;
 
-const repoTabs = ["App", "Files", "README", "Community"] as const;
 const capabilityChips = ["Multi-tenant controls", "Model gateway", "FastAPI", "Ollama", "Prometheus", "Grafana", "Docker", "Operator tooling"] as const;
 const capabilityPoints = [
   "Tenant-scoped access, quotas, and workspace isolation.",
@@ -31,38 +30,50 @@ const showcaseSteps = [
   {
     number: "01",
     title: "Load demo access",
-    description:
-      "Use the session panel to load the preconfigured local credentials and initialize the gateway session.",
+    beforeLink: "Use the",
+    linkLabel: "session panel",
+    href: "#gateway-settings",
+    afterLink: "to load the preconfigured local credentials and initialize the gateway session.",
   },
   {
     number: "02",
     title: "Save and check",
-    description:
-      "Confirm the base URL and admin key, then run the health checks to verify the stack is reachable.",
+    beforeLink: "Confirm the base URL and admin key, then run the",
+    linkLabel: "health checks",
+    href: "#system-status",
+    afterLink: "to verify the stack is reachable.",
   },
   {
     number: "03",
     title: "Create a tenant",
-    description:
-      "Open /pp1/tenants and create a workspace that will own requests, limits, and access policies.",
+    beforeLink: "Open",
+    linkLabel: "/pp1/tenants",
+    href: "/pp1/tenants",
+    afterLink: "and create a workspace that will own requests, limits, and access policies.",
   },
   {
     number: "04",
     title: "Generate a key",
-    description:
-      "Create a tenant-scoped key in /pp1/keys and copy the secret when it is shown.",
+    beforeLink: "Create a tenant-scoped key in",
+    linkLabel: "/pp1/keys",
+    href: "/pp1/keys",
+    afterLink: "and copy the secret when it is shown.",
   },
   {
     number: "05",
     title: "Send a request",
-    description:
-      "Use /pp1/chat to run a prompt through the gateway and confirm the request completes end to end.",
+    beforeLink: "Use",
+    linkLabel: "/pp1/chat",
+    href: "/pp1/chat",
+    afterLink: "to run a prompt through the gateway and confirm the request completes end to end.",
   },
   {
     number: "06",
     title: "Inspect the system",
-    description:
-      "Review the status panel and admin surfaces to validate visibility, isolation, and operator controls.",
+    beforeLink: "Review the",
+    linkLabel: "status panel",
+    href: "#system-status",
+    afterLink: "and admin surfaces to validate visibility, isolation, and operator controls.",
   },
 ] as const;
 
@@ -247,51 +258,8 @@ export default function PP1DashboardPage() {
           </div>
 
           <div className="space-y-6 py-8">
-              <div>
-                <p className="section-kicker">AI infrastructure portfolio project</p>
-                <h2 className="section-title mt-4 text-white">
-                  Multi-tenant LLM gateway with observability and operator controls
-                </h2>
-              </div>
-
-              <HoverCard className="overflow-hidden rounded-[1.1rem] border border-white/8 bg-white/[0.025]">
-                <div className="px-5 py-6 lg:px-7">
-                  <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--foreground)]/78">
-                    Self-hosted model gateway focused on tenant isolation, operational visibility, and production-style
-                    control over AI requests.
-                  </p>
-
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    {capabilityChips.map((chip) => (
-                      <span
-                        key={chip}
-                        className="font-mono text-[11px] rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-1 text-[var(--accent)]"
-                      >
-                        {chip}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="mt-8 flex flex-wrap gap-3">
-                    <Link
-                      href="/pp1/chat"
-                      className="rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-4 py-2 text-sm font-medium text-white transition-colors hover:border-[var(--accent)] hover:bg-[rgba(32,201,151,0.2)]"
-                    >
-                      Launch chat
-                    </Link>
-                    <Link
-                      href="/pp1/admin"
-                      className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-[var(--foreground)]/80 transition-colors hover:border-white/20 hover:text-white"
-                    >
-                      Open admin
-                    </Link>
-                  </div>
-                </div>
-              </HoverCard>
-
-              <div>
-                <p className="section-kicker">README.md</p>
-                <h2 className="section-title mt-4 text-white">How to use it</h2>
+              <div id="how-to-use">
+                <h2 className="section-title text-white">How to use it</h2>
                 <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
                   Follow the full gateway flow from session setup to tenant testing and system inspection.
                 </p>
@@ -305,7 +273,17 @@ export default function PP1DashboardPage() {
                         <div className="rounded-2xl border border-white/8 bg-white/[0.03] p-5">
                           <p className="font-mono text-xs text-[var(--accent)]">{step.number}</p>
                           <p className="mt-3 font-semibold text-white">{step.title}</p>
-                          <p className="mt-2 text-sm leading-7 text-[var(--muted)]">{step.description}</p>
+                          <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
+                            {step.beforeLink}{" "}
+                            <Link
+                              href={step.href}
+                              className="inline-flex items-center rounded-full border border-[var(--accent)]/30 bg-[var(--accent-soft)] px-2.5 py-0.5 font-mono text-xs font-semibold text-[var(--accent)] transition-colors hover:border-[var(--accent)] hover:bg-[rgba(32,201,151,0.2)]"
+                              style={{ color: "var(--accent)" }}
+                            >
+                              {step.linkLabel}
+                            </Link>{" "}
+                            {step.afterLink}
+                          </p>
                         </div>
                       </RevealItem>
                     ))}
@@ -313,11 +291,10 @@ export default function PP1DashboardPage() {
                 </div>
               </div>
 
-            <div>
+            <div id="gateway-settings">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="section-kicker">Session</p>
-                  <h3 className="section-title mt-2 text-white">Gateway settings</h3>
+                  <h3 className="section-title text-white">Gateway settings</h3>
                 </div>
                 <span
                   className={`rounded-full px-3 py-1 text-xs font-medium ${
@@ -440,10 +417,8 @@ export default function PP1DashboardPage() {
                   </div>
                 </div>
               </div>
-
-              <div>
-                <p className="section-kicker">System status</p>
-                <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
+              <div id="system-status">
+                <p className="text-sm leading-7 text-[var(--muted)]">
                   Health signals for the gateway stack tied to the current session.
                 </p>
               </div>
