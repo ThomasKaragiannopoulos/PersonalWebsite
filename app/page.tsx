@@ -4,27 +4,11 @@ import { NeuralCloudWrapper } from "@/components/NeuralCloudWrapper";
 export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      {/* Hero */}
-      <section
-        id="home"
-        className="flex min-h-screen flex-col items-center justify-center px-6 text-center"
-      >
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--muted)]">
-          ai-engineered.com
-        </p>
-        <h1 className="font-display mt-6 text-6xl font-normal text-white sm:text-8xl lg:text-[10rem]">
-          AI-Engineered
-        </h1>
-        <p className="mt-6 font-mono text-sm text-[var(--muted)]">
-          Built different. On purpose.
-        </p>
-        <a
-          href="#web-design"
-          className="mt-12 rounded-full border border-white/10 px-6 py-3 text-sm text-[var(--muted)] transition-colors hover:border-white/25 hover:text-white"
-        >
-          See what we do ↓
-        </a>
+      {/* Sandbox — full screen */}
+      <section id="sandbox" className="relative h-screen w-full overflow-hidden bg-black">
+        <NeuralCloudWrapper />
       </section>
+
 
       {/* Web Design */}
       <section
@@ -100,16 +84,6 @@ export default function Home() {
             >
               View work →
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Sandbox */}
-      <section id="sandbox" className="border-t border-white/8 px-6 py-24 sm:px-8 lg:px-12">
-        <div className="mx-auto w-full max-w-7xl">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Sandbox</p>
-          <div className="mt-6 h-[600px] w-full overflow-hidden rounded-2xl bg-black">
-            <NeuralCloudWrapper />
           </div>
         </div>
       </section>

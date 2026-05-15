@@ -81,7 +81,7 @@ const FRAG = /* glsl */ `
 
     float cloud = fbm(uv + 4.0 * r);
     float lf = fbm((uv + r) * 3.8 + tA * 1.5);
-    float lightning = pow(max(0.0, 1.0 - abs(lf - 0.52) * 18.0), 2.8);
+    float lightning = pow(max(0.0, 1.0 - abs(lf - 0.52) * 10.0), 4.0);
     float base = cloud * cloud;
 
     vec3 dark = vec3(0.00, 0.06, 0.22);
@@ -91,7 +91,7 @@ const FRAG = /* glsl */ `
 
     vec3 col = mix(dark, mid, base);
     col = mix(col, bright, base * base);
-    col += white * lightning * 0.06;
+    col += white * lightning * 0.035;
 
     float alpha = clamp((base * 0.45 + lightning * 0.05) * 3.0, 0.0, 1.0);
 
@@ -101,9 +101,9 @@ const FRAG = /* glsl */ `
     );
 
     vec2 scramble = vec2(
-      sin(uTime * 3.0 + vUv.y * 8.0),
-      cos(uTime * 2.5 + vUv.x * 8.0)
-    ) * 0.04;
+      sin(uTime * 1.4 + vUv.y * 5.0),
+      cos(uTime * 1.1 + vUv.x * 5.0)
+    ) * 0.018;
 
     float outerInfluence = 1.0 - smoothstep(0.0, blobR, dist);
     float coreInfluence = 1.0 - smoothstep(0.0, coreR, dist);
@@ -272,7 +272,7 @@ export function NeuralCloud() {
     let last = 0;
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick);
-      if (now - last < 33) return;
+      if (now - last < 16) return;
       last = now;
       uTimeVal.value = now / 1000;
       renderer.render(scene, camera);
@@ -310,9 +310,17 @@ export function NeuralCloud() {
             'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\'%3E%3Ccircle cx=\'8\' cy=\'8\' r=\'5\' fill=\'none\' stroke=\'%2359ADFF\' stroke-width=\'1.5\'/%3E%3C/svg%3E") 8 8, auto',
         }}
       />
-      <span className="pointer-events-none absolute inset-0 flex select-none items-center justify-center text-sm uppercase tracking-widest text-white">
-        AI-engineered
-      </span>
+      <div className="pointer-events-none absolute inset-0 flex select-none flex-col items-center justify-center gap-[1.5vw] overflow-hidden px-[20%] pb-[28%] pt-[10%] translate-y-[20%]">
+        <span className="-translate-y-[45%] font-mono font-bold text-[3.325vw] uppercase tracking-widest text-white">
+          AI-engineered
+        </span>
+        <span className="-translate-y-[80%] font-mono font-bold text-[0.92vw] uppercase tracking-[1.3em] text-white/80">
+          AI done right
+        </span>
+        <button className="pointer-events-auto border border-white/40 bg-white/[0.02] px-[2vw] py-[0.5vw] font-mono text-[0.7vw] uppercase tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all hover:border-white/80 hover:bg-white/10 hover:text-white">
+          [ ENTER ]
+        </button>
+      </div>
     </div>
   );
 }
