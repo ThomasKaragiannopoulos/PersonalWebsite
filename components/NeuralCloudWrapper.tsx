@@ -7,6 +7,11 @@ const NeuralCloud = dynamic(
   { ssr: false, loading: () => <div className="h-full w-full bg-black" /> },
 );
 
-export function NeuralCloudWrapper() {
-  return <NeuralCloud />;
+interface Props {
+  imageSrc?: string;
+  alphaSrc?: string;
+}
+
+export function NeuralCloudWrapper({ imageSrc, alphaSrc }: Props = {}) {
+  return <NeuralCloud imageSrc={imageSrc} alphaSrc={alphaSrc} />;
 }

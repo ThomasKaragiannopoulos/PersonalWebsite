@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NeuralCloudSection } from "@/components/NeuralCloudSection";
 import { NeuralCloudWrapper } from "@/components/NeuralCloudWrapper";
 
 export default function Home() {
@@ -13,24 +14,26 @@ export default function Home() {
       {/* Web Design */}
       <section
         id="web-design"
-        className="flex min-h-screen flex-col justify-center border-t border-white/8 px-6 sm:px-8 lg:px-12"
+        className="relative flex min-h-screen flex-col justify-center overflow-hidden border-t border-white/8 px-6 sm:px-8 lg:px-12"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 50% at 10% 80%, rgba(0,180,255,0.07) 0%, transparent 70%)",
+        }}
       >
-        <div className="mx-auto w-full max-w-7xl">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--accent)]">
-            Web Design
-          </p>
-          <h2 className="font-display mt-6 max-w-3xl text-5xl font-normal text-white sm:text-7xl">
-            Fast, modern sites built to convert.
+        <NeuralCloudSection imageSrc="/web-design-hero.png" alphaSrc="/web-design-alpha.png" />
+        <div className="relative z-10 mx-auto w-full max-w-7xl">
+          <h2 className="font-mono text-5xl font-normal text-white sm:text-7xl">
+            Web Design<span className="cursor">|</span>
           </h2>
-          <p className="mt-6 max-w-xl text-sm leading-7 text-[var(--muted)]">
-            From landing pages to full products — designed and shipped with an obsessive eye for detail.
-          </p>
+          <h3 className="font-mono mt-4 max-w-2xl text-sm leading-6 tracking-wide text-white/60">
+            Fast, modern sites built to convert.
+          </h3>
           <div className="mt-10">
             <Link
               href="#"
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 px-5 py-2.5 text-sm text-[var(--muted)] transition-colors hover:border-white/25 hover:text-white"
+              className="inline-block border border-white/40 bg-white/[0.02] px-8 py-3 font-mono text-xs uppercase tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all hover:border-white/80 hover:bg-white/10 hover:text-white"
             >
-              View work →
+              [ Read more ]
             </Link>
           </div>
         </div>
@@ -54,9 +57,9 @@ export default function Home() {
           <div className="mt-10">
             <Link
               href="/portfolio"
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 px-5 py-2.5 text-sm text-[var(--muted)] transition-colors hover:border-white/25 hover:text-white"
+              className="inline-block border border-white/40 bg-white/[0.02] px-8 py-3 font-mono text-xs uppercase tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all hover:border-white/80 hover:bg-white/10 hover:text-white"
             >
-              View work →
+              [ View work ]
             </Link>
           </div>
         </div>
@@ -80,9 +83,9 @@ export default function Home() {
           <div className="mt-10">
             <Link
               href="#"
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 px-5 py-2.5 text-sm text-[var(--muted)] transition-colors hover:border-white/25 hover:text-white"
+              className="inline-block border border-white/40 bg-white/[0.02] px-8 py-3 font-mono text-xs uppercase tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all hover:border-white/80 hover:bg-white/10 hover:text-white"
             >
-              View work →
+              [ View work ]
             </Link>
           </div>
         </div>

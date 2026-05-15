@@ -56,7 +56,9 @@ export default function RootLayout({
       lang="en"
       className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} h-full scroll-smooth`}
     >
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        {children}
+      </body>
     </html>
   );
 }

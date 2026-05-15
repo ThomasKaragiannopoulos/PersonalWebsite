@@ -5,12 +5,9 @@ import * as THREE from "three";
 
 const VERT = /* glsl */ `
   varying vec2 vUv;
-  varying vec4 vClipPos;
-
   void main() {
     vUv = uv;
-    vClipPos = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    gl_Position = vClipPos;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
 `;
 
@@ -24,7 +21,6 @@ const FRAG = /* glsl */ `
   uniform vec2 uImageOffset;
 
   varying vec2 vUv;
-  varying vec4 vClipPos;
 
   float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
@@ -57,7 +53,7 @@ const FRAG = /* glsl */ `
   void main() {
     vec2 uv = vUv;
     float t = uTime * 0.10 + uLayer * 2.1;
-    vec2 screenUV = (vClipPos.xy / vClipPos.w) * 0.5 + 0.5;
+    vec2 screenUV = gl_FragCoord.xy / uContainerSize;
     vec2 toMouseUV = uMouse - screenUV;
     float dist = length(toMouseUV);
     float blobR = 0.09;
@@ -69,11 +65,7 @@ const FRAG = /* glsl */ `
     vec2 tA = vec2(sin(t * 0.7) * 0.7, cos(t * 0.5) * 0.7);
     vec2 tB = vec2(cos(t * 0.4) * 0.6, sin(t * 0.6) * 0.6);
 
-    vec2 q = vec2(
-      fbm(uv + tA),
-      fbm(uv + vec2(5.2, 1.3) + tB)
-    );
-
+    vec2 q = vec2(fbm(uv + tA), fbm(uv + vec2(5.2, 1.3) + tB));
     vec2 r = vec2(
       fbm(uv + 4.0 * q + vec2(1.7, 9.2) + tA * 0.85),
       fbm(uv + 4.0 * q + vec2(8.3, 2.8) + tB * 0.65)
@@ -110,20 +102,13 @@ const FRAG = /* glsl */ `
     vec2 pull = (toMouseUV * coreInfluence + scramble * outerInfluence) * 0.5;
     vec2 sUv = vUv + pull + vec2(3.1, 7.4) + uLayer * 1.3;
     vec2 tC = vec2(sin(t * 0.45) * 0.8, cos(t * 0.65) * 0.8);
-    vec2 sq = vec2(
-      fbm(sUv + tC),
-      fbm(sUv + vec2(2.1, 4.7) + tC * 0.7)
-    );
+    vec2 sq = vec2(fbm(sUv + tC), fbm(sUv + vec2(2.1, 4.7) + tC * 0.7));
     float smoke = fbm(sUv + 3.2 * sq);
-    float smokeBase = smoke * smoke;
-
-    float smokeAlpha = smokeBase * 0.8 * reveal;
+    float smokeAlpha = smoke * smoke * 0.8 * reveal;
     alpha = max(alpha, smokeAlpha);
 
-    screenUV.y += 0.0;
     vec2 screenPx = screenUV * uContainerSize;
     vec2 alphaUV = (screenPx - uImageOffset) / uImageDisplaySize;
-
     float mask = texture2D(uAlpha, alphaUV).r;
     alpha *= mask;
 
@@ -131,12 +116,18 @@ const FRAG = /* glsl */ `
   }
 `;
 
-interface NeuralCloudProps {
-  imageSrc?: string;
-  alphaSrc?: string;
+const LAYER_CFGS = [
+  { z: 0,    ry: 0,     scale: 1.0,  layer: 0.0  },
+  { z: -0.5, ry: 0.07,  scale: 1.12, layer: 0.35 },
+  { z: -1.1, ry: -0.05, scale: 1.25, layer: 0.7  },
+];
+
+interface Props {
+  imageSrc: string;
+  alphaSrc: string;
 }
 
-export function NeuralCloud({ imageSrc = "/crt.png", alphaSrc = "/crt-alpha.png" }: NeuralCloudProps) {
+export function NeuralCloudSection({ imageSrc, alphaSrc }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -154,15 +145,7 @@ export function NeuralCloud({ imageSrc = "/crt.png", alphaSrc = "/crt-alpha.png"
     const camera = new THREE.PerspectiveCamera(55, wrap.clientWidth / wrap.clientHeight, 0.1, 100);
     camera.position.z = 3;
 
-    const layers = [
-      { z: 0, ry: 0, scale: 1.0, layer: 0.0 },
-      { z: -0.5, ry: 0.07, scale: 1.12, layer: 0.35 },
-      { z: -1.1, ry: -0.05, scale: 1.25, layer: 0.7 },
-    ];
-
     const geo = new THREE.PlaneGeometry(8, 8);
-    const materials: THREE.ShaderMaterial[] = [];
-
     const uTimeVal = { value: 0 };
     const mouseUV = new THREE.Vector2(-1, -1);
     const alphaTex = { value: new THREE.TextureLoader().load(alphaSrc) };
@@ -170,50 +153,21 @@ export function NeuralCloud({ imageSrc = "/crt.png", alphaSrc = "/crt-alpha.png"
     const imageDisplaySizeVal = { value: new THREE.Vector2(wrap.clientWidth, wrap.clientHeight) };
     const imageOffsetVal = { value: new THREE.Vector2(0, 0) };
 
-    const parseObjectPosition = (value: string) => {
-      const [rawX = "50%", rawY = "50%"] = value.trim().split(/\s+/);
-      const parseAxis = (axis: string) => {
-        if (axis.endsWith("%")) return Number.parseFloat(axis) / 100;
-
-        switch (axis) {
-          case "left":
-          case "top":
-            return 0;
-          case "right":
-          case "bottom":
-            return 1;
-          case "center":
-          default:
-            return 0.5;
-        }
-      };
-
-      return {
-        x: parseAxis(rawX),
-        y: parseAxis(rawY),
-      };
-    };
-
     const syncImageMapping = () => {
-      const containerWidth = wrap.clientWidth;
-      const containerHeight = wrap.clientHeight;
-      containerSizeVal.value.set(containerWidth, containerHeight);
-
-      const naturalWidth = image.naturalWidth || containerWidth;
-      const naturalHeight = image.naturalHeight || containerHeight;
-      const scale = Math.max(containerWidth / naturalWidth, containerHeight / naturalHeight);
-      const renderedWidth = naturalWidth * scale;
-      const renderedHeight = naturalHeight * scale;
-
-      const { x, y } = parseObjectPosition(getComputedStyle(image).objectPosition);
-      const offsetX = (containerWidth - renderedWidth) * x;
-      const offsetY = (containerHeight - renderedHeight) * y;
-
-      imageDisplaySizeVal.value.set(renderedWidth, renderedHeight);
-      imageOffsetVal.value.set(offsetX, offsetY);
+      const w = wrap.clientWidth;
+      const h = wrap.clientHeight;
+      containerSizeVal.value.set(w, h);
+      const nw = image.naturalWidth || w;
+      const nh = image.naturalHeight || h;
+      const scale = Math.max(w / nw, h / nh);
+      const rw = nw * scale;
+      const rh = nh * scale;
+      imageDisplaySizeVal.value.set(rw, rh);
+      imageOffsetVal.value.set((w - rw) * 0.5, (h - rh) * 0.5);
     };
 
-    for (const cfg of layers) {
+    const materials: THREE.ShaderMaterial[] = [];
+    for (const cfg of LAYER_CFGS) {
       const mat = new THREE.ShaderMaterial({
         uniforms: {
           uTime: uTimeVal,
@@ -232,7 +186,6 @@ export function NeuralCloud({ imageSrc = "/crt.png", alphaSrc = "/crt-alpha.png"
         side: THREE.DoubleSide,
       });
       materials.push(mat);
-
       const mesh = new THREE.Mesh(geo, mat);
       mesh.position.z = cfg.z;
       mesh.rotation.y = cfg.ry;
@@ -240,18 +193,14 @@ export function NeuralCloud({ imageSrc = "/crt.png", alphaSrc = "/crt-alpha.png"
       scene.add(mesh);
     }
 
-    const onMove = (e: MouseEvent) => {
+    const onMouseMove = (e: MouseEvent) => {
       const r = wrap.getBoundingClientRect();
       mouseUV.x = (e.clientX - r.left) / r.width;
       mouseUV.y = 1.0 - (e.clientY - r.top) / r.height;
     };
-
-    const onLeave = () => {
-      mouseUV.set(-1, -1);
-    };
-
-    wrap.addEventListener("mousemove", onMove);
-    wrap.addEventListener("mouseleave", onLeave);
+    const onMouseLeave = () => { mouseUV.set(-1, -1); };
+    window.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseleave", onMouseLeave);
 
     const onResize = () => {
       camera.aspect = wrap.clientWidth / wrap.clientHeight;
@@ -259,18 +208,11 @@ export function NeuralCloud({ imageSrc = "/crt.png", alphaSrc = "/crt-alpha.png"
       renderer.setSize(wrap.clientWidth, wrap.clientHeight);
       syncImageMapping();
     };
-
     window.addEventListener("resize", onResize);
 
     const resizeObserver = new ResizeObserver(syncImageMapping);
     resizeObserver.observe(wrap);
-    resizeObserver.observe(image);
-
-    const onImageLoad = () => {
-      syncImageMapping();
-    };
-
-    image.addEventListener("load", onImageLoad);
+    image.addEventListener("load", syncImageMapping);
     syncImageMapping();
 
     let raf: number;
@@ -282,50 +224,34 @@ export function NeuralCloud({ imageSrc = "/crt.png", alphaSrc = "/crt-alpha.png"
       uTimeVal.value = now / 1000;
       renderer.render(scene, camera);
     };
-    requestAnimationFrame(tick);
+    raf = requestAnimationFrame(tick);
 
     return () => {
       cancelAnimationFrame(raf);
-      wrap.removeEventListener("mousemove", onMove);
-      wrap.removeEventListener("mouseleave", onLeave);
+      window.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseleave", onMouseLeave);
       window.removeEventListener("resize", onResize);
       resizeObserver.disconnect();
-      image.removeEventListener("load", onImageLoad);
+      image.removeEventListener("load", syncImageMapping);
       geo.dispose();
       materials.forEach((m) => m.dispose());
       alphaTex.value.dispose();
       renderer.dispose();
-      wrap.removeChild(renderer.domElement);
+      if (wrap.contains(renderer.domElement)) {
+        wrap.removeChild(renderer.domElement);
+      }
     };
-  }, []);
+  }, [alphaSrc]);
 
   return (
-    <div className="relative h-full w-full">
+    <div className="absolute inset-0">
       <img
         ref={imageRef}
         src={imageSrc}
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />
-      <div
-        ref={wrapRef}
-        className="absolute inset-0"
-        style={{
-          cursor:
-            'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\'%3E%3Ccircle cx=\'8\' cy=\'8\' r=\'5\' fill=\'none\' stroke=\'%2359ADFF\' stroke-width=\'1.5\'/%3E%3C/svg%3E") 8 8, auto',
-        }}
-      />
-      <div className="pointer-events-none absolute inset-0 flex select-none flex-col items-center justify-center gap-[1.5vw] overflow-hidden px-[20%] pb-[28%] pt-[10%] translate-y-[20%]">
-        <span className="-translate-y-[45%] font-mono font-bold text-[3.325vw] uppercase tracking-widest text-white">
-          AI-engineered
-        </span>
-        <span className="-translate-y-[80%] font-mono font-bold text-[0.92vw] uppercase tracking-[1.3em] text-white/80">
-          AI done right
-        </span>
-        <button className="pointer-events-auto border border-white/40 bg-white/[0.02] px-[2vw] py-[0.5vw] font-mono text-[0.7vw] uppercase tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all hover:border-white/80 hover:bg-white/10 hover:text-white">
-          [ ENTER ]
-        </button>
-      </div>
+      <div ref={wrapRef} className="pointer-events-none absolute inset-0" />
     </div>
   );
 }
