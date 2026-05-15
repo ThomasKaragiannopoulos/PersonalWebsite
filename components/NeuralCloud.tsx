@@ -136,7 +136,7 @@ interface NeuralCloudProps {
   alphaSrc?: string;
 }
 
-export function NeuralCloud({ imageSrc = "/crt.png", alphaSrc = "/crt-alpha.png" }: NeuralCloudProps) {
+export function NeuralCloud({ imageSrc = "/Section0.png", alphaSrc = "/Section0Alpha.png" }: NeuralCloudProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -322,9 +322,9 @@ export function NeuralCloud({ imageSrc = "/crt.png", alphaSrc = "/crt-alpha.png"
         <span className="-translate-y-[80%] font-mono font-bold text-[0.92vw] uppercase tracking-[1.3em] text-white/80">
           AI done right
         </span>
-        <button className="pointer-events-auto border border-white/40 bg-white/[0.02] px-[2vw] py-[0.5vw] font-mono text-[0.7vw] uppercase tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all hover:border-white/80 hover:bg-white/10 hover:text-white">
-          [ ENTER ]
-        </button>
+        <a href="#contact" className="pointer-events-auto border border-white/40 bg-white/[0.02] px-[2vw] py-[0.5vw] font-mono text-[0.7vw] uppercase tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all hover:border-white/80 hover:bg-white/10 hover:text-white">
+          [ CONTACT ]
+        </a>
       </div>
     </div>
   );

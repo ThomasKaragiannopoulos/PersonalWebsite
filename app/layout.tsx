@@ -54,9 +54,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} h-full scroll-smooth`}
+      className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} h-full scroll-smooth overflow-x-hidden`}
     >
-      <body className="min-h-full">
+      <body className="min-h-full overflow-x-hidden">
         {children}
       </body>
     </html>

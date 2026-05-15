@@ -123,8 +123,8 @@ const LAYER_CFGS = [
 ];
 
 interface Props {
-  imageSrc: string;
-  alphaSrc: string;
+  imageSrc?: string;
+  alphaSrc?: string;
 }
 
 export function NeuralCloudSection({ imageSrc, alphaSrc }: Props) {
@@ -133,8 +133,8 @@ export function NeuralCloudSection({ imageSrc, alphaSrc }: Props) {
 
   useEffect(() => {
     const wrap = wrapRef.current;
+    if (!wrap) return;
     const image = imageRef.current;
-    if (!wrap || !image) return;
 
     const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
     renderer.setPixelRatio(1);
@@ -148,7 +148,15 @@ export function NeuralCloudSection({ imageSrc, alphaSrc }: Props) {
     const geo = new THREE.PlaneGeometry(8, 8);
     const uTimeVal = { value: 0 };
     const mouseUV = new THREE.Vector2(-1, -1);
-    const alphaTex = { value: new THREE.TextureLoader().load(alphaSrc) };
+    let alphaTexValue: THREE.Texture;
+    if (alphaSrc) {
+      alphaTexValue = new THREE.TextureLoader().load(alphaSrc);
+    } else {
+      const white = new THREE.DataTexture(new Uint8Array([255, 255, 255, 255]), 1, 1, THREE.RGBAFormat);
+      white.needsUpdate = true;
+      alphaTexValue = white;
+    }
+    const alphaTex = { value: alphaTexValue };
     const containerSizeVal = { value: new THREE.Vector2(wrap.clientWidth, wrap.clientHeight) };
     const imageDisplaySizeVal = { value: new THREE.Vector2(wrap.clientWidth, wrap.clientHeight) };
     const imageOffsetVal = { value: new THREE.Vector2(0, 0) };
@@ -157,13 +165,18 @@ export function NeuralCloudSection({ imageSrc, alphaSrc }: Props) {
       const w = wrap.clientWidth;
       const h = wrap.clientHeight;
       containerSizeVal.value.set(w, h);
-      const nw = image.naturalWidth || w;
-      const nh = image.naturalHeight || h;
-      const scale = Math.max(w / nw, h / nh);
-      const rw = nw * scale;
-      const rh = nh * scale;
-      imageDisplaySizeVal.value.set(rw, rh);
-      imageOffsetVal.value.set((w - rw) * 0.5, (h - rh) * 0.5);
+      if (image) {
+        const nw = image.naturalWidth || w;
+        const nh = image.naturalHeight || h;
+        const scale = Math.max(w / nw, h / nh);
+        const rw = nw * scale;
+        const rh = nh * scale;
+        imageDisplaySizeVal.value.set(rw, rh);
+        imageOffsetVal.value.set((w - rw) * 0.5, (h - rh) * 0.5);
+      } else {
+        imageDisplaySizeVal.value.set(w, h);
+        imageOffsetVal.value.set(0, 0);
+      }
     };
 
     const materials: THREE.ShaderMaterial[] = [];
@@ -212,7 +225,7 @@ export function NeuralCloudSection({ imageSrc, alphaSrc }: Props) {
 
     const resizeObserver = new ResizeObserver(syncImageMapping);
     resizeObserver.observe(wrap);
-    image.addEventListener("load", syncImageMapping);
+    if (image) image.addEventListener("load", syncImageMapping);
     syncImageMapping();
 
     let raf: number;
@@ -232,7 +245,7 @@ export function NeuralCloudSection({ imageSrc, alphaSrc }: Props) {
       document.removeEventListener("mouseleave", onMouseLeave);
       window.removeEventListener("resize", onResize);
       resizeObserver.disconnect();
-      image.removeEventListener("load", syncImageMapping);
+      if (image) image.removeEventListener("load", syncImageMapping);
       geo.dispose();
       materials.forEach((m) => m.dispose());
       alphaTex.value.dispose();
@@ -245,12 +258,14 @@ export function NeuralCloudSection({ imageSrc, alphaSrc }: Props) {
 
   return (
     <div className="absolute inset-0">
-      <img
-        ref={imageRef}
-        src={imageSrc}
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover"
-      />
+      {imageSrc && (
+        <img
+          ref={imageRef}
+          src={imageSrc}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      )}
       <div ref={wrapRef} className="pointer-events-none absolute inset-0" />
     </div>
   );
