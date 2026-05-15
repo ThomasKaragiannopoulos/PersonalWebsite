@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NeuralCloudWrapper } from "@/components/NeuralCloudWrapper";
 
 export default function Home() {
   return (
@@ -99,6 +100,16 @@ export default function Home() {
             >
               View work →
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Sandbox */}
+      <section id="sandbox" className="border-t border-white/8 px-6 py-24 sm:px-8 lg:px-12">
+        <div className="mx-auto w-full max-w-7xl">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Sandbox</p>
+          <div className="mt-6 h-[600px] w-full overflow-hidden rounded-2xl bg-black">
+            <NeuralCloudWrapper />
           </div>
         </div>
       </section>
