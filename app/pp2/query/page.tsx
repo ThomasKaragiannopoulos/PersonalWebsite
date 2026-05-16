@@ -127,7 +127,6 @@ export default function PP2QueryPage() {
     setErrorMsg("");
     setExpandedChunk(null);
 
-    // Activate first node immediately
     activateNode("analyze");
 
     try {
@@ -136,24 +135,35 @@ export default function PP2QueryPage() {
           if (event.node === "analyze") {
             setTrace((prev) => ({
               ...prev,
-              analyze: { status: "done", data: event.data as AnalyzeData },
+              analyze: { status: "done", data: event.data },
               retrieve: { status: "active" },
             }));
           } else if (event.node === "retrieve") {
-            setChunks((event.data as RetrieveData).chunks);
+            setChunks(event.data.chunks);
             setTrace((prev) => ({
               ...prev,
-              retrieve: { status: "done", data: event.data as RetrieveData },
+              retrieve: { status: "done", data: event.data },
               rerank: { status: "active" },
             }));
           } else if (event.node === "rerank") {
-            const rerankData = event.data as RerankData;
+            const rerankData: RerankData = event.data;
             setChunks(rerankData.chunks);
             setTrace((prev) => ({
               ...prev,
               rerank: { status: "done", data: { top_k: rerankData.top_k } },
               generate: { status: "active" },
             }));
+          } else if (event.node === "reformulate") {
+            setTrace((prev) => ({
+              ...prev,
+              reformulate: { status: "done", data: event.data },
+              retrieve: { status: "active" },
+              rerank: { status: "pending" },
+              generate: { status: "pending" },
+              evaluate: { status: "pending" },
+            }));
+            setTokens("");
+            setEvalData(null);
           }
         } else if (event.type === "token") {
           setTokens((prev) => prev + event.data);
@@ -164,17 +174,6 @@ export default function PP2QueryPage() {
             evaluate: { status: "done" },
           }));
           setEvalData(event.data);
-        } else if (event.type === "step" && event.node === "reformulate") {
-          setTrace((prev) => ({
-            ...prev,
-            reformulate: { status: "done", data: event.data as ReformulateData },
-            retrieve: { status: "active" },
-            rerank: { status: "pending" },
-            generate: { status: "pending" },
-            evaluate: { status: "pending" },
-          }));
-          setTokens("");
-          setEvalData(null);
         } else if (event.type === "error") {
           const msg = typeof event.data === "string" ? event.data : event.data.message;
           setErrorMsg(msg);
@@ -192,7 +191,6 @@ export default function PP2QueryPage() {
   return (
     <div className="mx-auto w-full max-w-7xl px-6 pb-16 pt-10 sm:px-8 lg:px-12">
       <RevealSection>
-        {/* Header */}
         <div className="border-b border-white/8 pb-10">
           <p className="font-mono text-sm text-[var(--muted)]">
             <span>pp2</span>
@@ -203,11 +201,11 @@ export default function PP2QueryPage() {
             Query the pipeline.
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-[var(--muted)]">
-            Ask anything about Greek wine. The LangGraph agent analyzes intent, routes irrelevant questions safely, retrieves, reranks, generates, and self-evaluates - each step visible as it runs.
+            Ask anything about Greek wine. The LangGraph agent analyzes intent, routes irrelevant questions safely,
+            retrieves, reranks, generates, and self-evaluates - each step visible as it runs.
           </p>
         </div>
 
-        {/* Input */}
         <RevealItem>
           <div className="mt-8">
             <div className="overflow-hidden rounded-[1.1rem] border border-white/8 bg-white/[0.025]">
@@ -235,45 +233,43 @@ export default function PP2QueryPage() {
                     disabled={runState === "running" || !query.trim()}
                     className="rounded-full border border-[var(--accent)]/40 bg-[var(--accent-soft)] px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-40"
                   >
-                    {runState === "running" ? "Running…" : "Ask"}
+                    {runState === "running" ? "Running..." : "Ask"}
                   </button>
                   {suggested.length > 0 && (
                     <div className="flex flex-wrap gap-2">
-                      {suggested.map((q) => (
+                      {suggested.map((suggestedQuery) => (
                         <button
-                          key={q}
+                          key={suggestedQuery}
                           type="button"
-                          onClick={() => setQuery(q)}
+                          onClick={() => setQuery(suggestedQuery)}
                           className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-[var(--muted)] transition-colors hover:border-white/20 hover:text-white"
                         >
-                          {q}
+                          {suggestedQuery}
                         </button>
                       ))}
                     </div>
                   )}
                 </div>
-                {errorMsg && (
-                  <p className="mt-3 text-sm text-red-400">{errorMsg}</p>
-                )}
+                {errorMsg && <p className="mt-3 text-sm text-red-400">{errorMsg}</p>}
               </div>
             </div>
           </div>
         </RevealItem>
 
-        {/* Main two-column area */}
-        {(runState !== "idle") && (
+        {runState !== "idle" && (
           <RevealItem>
             <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.85fr)] lg:items-start">
-
-              {/* Left: Agent trace */}
               <div>
                 <h2 className="section-title text-white">Agent trace</h2>
-                <p className="mt-2 text-sm text-[var(--muted)]">
-                  LangGraph nodes executing in sequence.
-                </p>
+                <p className="mt-2 text-sm text-[var(--muted)]">LangGraph nodes executing in sequence.</p>
                 <div className="mt-5 space-y-2">
                   {NODES.map((node) => {
                     const n = trace[node];
+                    const analyzeNode = node === "analyze" ? trace.analyze : null;
+                    const retrieveNode = node === "retrieve" ? trace.retrieve : null;
+                    const rerankNode = node === "rerank" ? trace.rerank : null;
+                    const reformulateNode = node === "reformulate" ? trace.reformulate : null;
+
                     return (
                       <div
                         key={node}
@@ -284,39 +280,35 @@ export default function PP2QueryPage() {
                           <span className="font-mono text-sm font-medium">{NODE_LABELS[node]}</span>
                         </div>
 
-                        {/* Analyze data */}
-                        {node === "analyze" && n.status === "done" && n.data && (
+                        {analyzeNode?.status === "done" && analyzeNode.data && (
                           <div className="mt-3 space-y-1 pl-5">
                             <p className="text-xs text-[var(--muted)]">
                               <span className="text-white/50">type</span>{" "}
-                              <span className="font-mono">{(n.data as AnalyzeData).query_type}</span>
+                              <span className="font-mono">{analyzeNode.data.query_type}</span>
                             </p>
                             <p className="text-xs text-[var(--muted)]">
                               <span className="text-white/50">intent</span>{" "}
-                              {(n.data as AnalyzeData).intent}
+                              {analyzeNode.data.intent}
                             </p>
                           </div>
                         )}
 
-                        {/* Retrieve data */}
-                        {node === "retrieve" && n.status === "done" && n.data && (
+                        {retrieveNode?.status === "done" && retrieveNode.data && (
                           <p className="mt-2 pl-5 text-xs text-[var(--muted)]">
-                            {(n.data as RetrieveData).count} chunks retrieved
+                            {retrieveNode.data.count} chunks retrieved
                           </p>
                         )}
 
-                        {/* Rerank data */}
-                        {node === "rerank" && n.status === "done" && n.data && (
+                        {rerankNode?.status === "done" && rerankNode.data && (
                           <p className="mt-2 pl-5 text-xs text-[var(--muted)]">
-                            top {(n.data as { top_k: number }).top_k} selected
+                            top {rerankNode.data.top_k} selected
                           </p>
                         )}
 
-                        {/* Reformulate data */}
-                        {node === "reformulate" && n.status === "done" && n.data && (
+                        {reformulateNode?.status === "done" && reformulateNode.data && (
                           <div className="mt-2 pl-5 text-xs text-[var(--muted)]">
-                            <span className="text-white/50">retry {(n.data as ReformulateData).retry} — </span>
-                            {(n.data as ReformulateData).reformulated_query}
+                            <span className="text-white/50">retry {reformulateNode.data.retry} - </span>
+                            {reformulateNode.data.reformulated_query}
                           </div>
                         )}
                       </div>
@@ -325,10 +317,7 @@ export default function PP2QueryPage() {
                 </div>
               </div>
 
-              {/* Right: Answer + eval + chunks */}
               <div className="space-y-6">
-
-                {/* Answer */}
                 <div>
                   <h2 className="section-title text-white">Answer</h2>
                   <div className="mt-4 overflow-hidden rounded-[1.1rem] border border-white/8 bg-white/[0.025]">
@@ -342,14 +331,13 @@ export default function PP2QueryPage() {
                         </p>
                       ) : (
                         <p className="text-sm text-[var(--muted)]">
-                          {runState === "running" ? "Generating…" : "No answer yet."}
+                          {runState === "running" ? "Generating..." : "No answer yet."}
                         </p>
                       )}
                     </div>
                   </div>
                 </div>
 
-                {/* Eval scores */}
                 {evalData && (
                   <div>
                     <h2 className="section-title text-white">Eval scores</h2>
@@ -360,13 +348,10 @@ export default function PP2QueryPage() {
                   </div>
                 )}
 
-                {/* Retrieved chunks */}
                 {chunks.length > 0 && (
                   <div>
                     <h2 className="section-title text-white">Retrieved chunks</h2>
-                    <p className="mt-2 text-xs text-[var(--muted)]">
-                      BM25 + pgvector fused via RRF (K=60). Tap to expand.
-                    </p>
+                    <p className="mt-2 text-xs text-[var(--muted)]">BM25 + pgvector fused via RRF (K=60). Tap to expand.</p>
                     <div className="mt-4 space-y-2">
                       {chunks.map((chunk) => {
                         const isOpen = expandedChunk === chunk.id;
@@ -380,7 +365,7 @@ export default function PP2QueryPage() {
                             <div className="flex items-start justify-between gap-3">
                               <div className="min-w-0">
                                 <p className="text-sm font-semibold text-white">{chunk.name}</p>
-                                <p className="mt-0.5 text-xs text-[var(--muted)]">{chunk.region || "—"}</p>
+                                <p className="mt-0.5 text-xs text-[var(--muted)]">{chunk.region || "-"}</p>
                               </div>
                               <span className="mt-0.5 shrink-0 font-mono text-xs text-[var(--accent)]">
                                 {chunk.rrf_score.toFixed(4)}
@@ -389,9 +374,7 @@ export default function PP2QueryPage() {
 
                             {isOpen && (
                               <div className="mt-4 space-y-3 border-t border-white/8 pt-4">
-                                {chunk.text && (
-                                  <p className="text-xs leading-6 text-[var(--muted)]">{chunk.text}</p>
-                                )}
+                                {chunk.text && <p className="text-xs leading-6 text-[var(--muted)]">{chunk.text}</p>}
                                 <div className="space-y-2">
                                   <ScoreBar label="BM25" value={chunk.bm25_score} />
                                   <ScoreBar label="Vector" value={chunk.vector_score} />
