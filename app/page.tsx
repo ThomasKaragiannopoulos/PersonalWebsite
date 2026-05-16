@@ -5,14 +5,14 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Sandbox - full screen */}
-      <section id="sandbox" className="relative h-screen w-full overflow-hidden bg-black">
+      <section id="sandbox" className="neural-cursor relative h-screen w-full overflow-hidden bg-black">
         <NeuralCloudWrapper />
       </section>
 
       {/* Web Design */}
       <section
         id="web-design"
-        className="relative flex min-h-screen flex-col justify-center overflow-hidden border-t border-white/8 px-6 sm:px-8 lg:px-12"
+        className="neural-cursor relative flex min-h-screen flex-col justify-center overflow-hidden border-t border-white/8 px-6 sm:px-8 lg:px-12"
         style={{
           background:
             "radial-gradient(ellipse 70% 50% at 10% 80%, rgba(0,180,255,0.07) 0%, transparent 70%)",
@@ -32,7 +32,7 @@ export default function Home() {
       {/* AI Systems */}
       <section
         id="ai-systems"
-        className="relative flex min-h-screen flex-col justify-center overflow-hidden border-t border-white/8 px-6 sm:px-8 lg:px-12"
+        className="neural-cursor relative flex min-h-screen flex-col justify-center overflow-hidden border-t border-white/8 px-6 sm:px-8 lg:px-12"
         style={{
           background:
             "radial-gradient(ellipse 65% 45% at 85% 20%, rgba(0,180,255,0.08) 0%, transparent 70%)",
@@ -52,7 +52,7 @@ export default function Home() {
       {/* Automations */}
       <section
         id="automations"
-        className="relative flex min-h-screen flex-col justify-center overflow-hidden border-t border-white/8 px-6 sm:px-8 lg:px-12"
+        className="neural-cursor relative flex min-h-screen flex-col justify-center overflow-hidden border-t border-white/8 px-6 sm:px-8 lg:px-12"
         style={{
           background:
             "radial-gradient(ellipse 68% 48% at 15% 25%, rgba(0,180,255,0.08) 0%, transparent 72%)",
@@ -60,7 +60,7 @@ export default function Home() {
       >
         <NeuralCloudSection imageSrc="/SectionC.png" alphaSrc="/SectionCAlpha.png" />
         <div className="relative z-10 mx-auto w-full max-w-7xl">
-          <h2 className="font-mono text-[2.7rem] font-normal text-white sm:text-[4.05rem]">
+          <h2 className="font-mono text-[clamp(2.2rem,8vw,4.05rem)] font-normal leading-none text-white">
             Automations<span className="cursor">|</span>
           </h2>
           <h3 className="mt-4 max-w-2xl font-mono text-sm leading-6 tracking-wide text-white/60">
@@ -72,7 +72,7 @@ export default function Home() {
       {/* Contact */}
       <section
         id="contact"
-        className="relative flex min-h-screen flex-col items-center justify-center border-t border-white/8 px-6 text-center sm:px-8 lg:px-12"
+        className="neural-cursor relative flex min-h-screen flex-col items-center justify-center border-t border-white/8 px-6 text-center sm:px-8 lg:px-12"
         style={{
           background:
             "radial-gradient(ellipse 60% 50% at 50% 100%, rgba(0,180,255,0.07) 0%, transparent 70%)",
@@ -80,9 +80,6 @@ export default function Home() {
       >
         <NeuralCloudSection />
         <div className="relative z-10 mx-auto max-w-2xl">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--muted)]">
-            Contact
-          </p>
           <h2 className="font-display mt-6 text-[2.025rem] font-normal text-white sm:text-[2.7rem]">
             Have a project in mind?
           </h2>

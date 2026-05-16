@@ -315,14 +315,14 @@ export function NeuralCloud({ imageSrc = "/Section0.png", alphaSrc = "/Section0A
             'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\'%3E%3Ccircle cx=\'8\' cy=\'8\' r=\'5\' fill=\'none\' stroke=\'%2359ADFF\' stroke-width=\'1.5\'/%3E%3C/svg%3E") 8 8, auto',
         }}
       />
-      <div className="pointer-events-none absolute inset-0 flex select-none flex-col items-center justify-center gap-[1.5vw] overflow-hidden px-[20%] pb-[28%] pt-[10%] translate-y-[20%]">
-        <span className="-translate-y-[45%] font-mono font-bold text-[3.325vw] uppercase tracking-widest text-white">
+      <div className="pointer-events-none absolute inset-0 flex select-none flex-col items-center justify-center gap-[clamp(0.45rem,2vw,1.5rem)] overflow-hidden px-[16%] pb-[20%] pt-[8%] translate-y-[10%] text-center sm:gap-[clamp(0.4rem,1.5vw,1.5rem)] sm:px-[20%] sm:pb-[28%] sm:pt-[10%] sm:translate-y-[20%]">
+        <span className="-translate-y-[25%] font-mono font-bold text-[clamp(1.45rem,6.5vw,3rem)] uppercase tracking-widest text-white sm:-translate-y-[45%] sm:text-[clamp(0.9rem,3.325vw,3rem)]">
           AI-engineered
         </span>
-        <span className="-translate-y-[80%] font-mono font-bold text-[0.92vw] uppercase tracking-[1.3em] text-white/80">
+        <span className="-translate-y-[50%] font-mono font-bold text-[clamp(0.55rem,1.9vw,0.85rem)] uppercase tracking-[1em] text-white/80 sm:-translate-y-[80%] sm:text-[clamp(0.45rem,0.92vw,0.85rem)] sm:tracking-[1.3em]">
           AI done right
         </span>
-        <a href="#contact" className="pointer-events-auto border border-white/40 bg-white/[0.02] px-[2vw] py-[0.5vw] font-mono text-[0.7vw] uppercase tracking-[0.3em] text-white/70 backdrop-blur-sm transition-all hover:border-white/80 hover:bg-white/10 hover:text-white">
+        <a href="#contact" className="pointer-events-auto border border-white/40 bg-white/[0.02] px-[clamp(0.7rem,3vw,2rem)] py-[clamp(0.32rem,1vw,0.6rem)] font-mono text-[clamp(0.5rem,1.75vw,0.75rem)] uppercase tracking-[0.25em] text-white/70 backdrop-blur-sm transition-all hover:border-white/80 hover:bg-white/10 hover:text-white sm:px-[clamp(0.5rem,2vw,2rem)] sm:py-[clamp(0.25rem,0.5vw,0.6rem)] sm:text-[clamp(0.4rem,0.7vw,0.75rem)] sm:tracking-[0.3em]">
           [ CONTACT ]
         </a>
       </div>

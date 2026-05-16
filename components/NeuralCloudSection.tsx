@@ -266,7 +266,14 @@ export function NeuralCloudSection({ imageSrc, alphaSrc }: Props) {
           className="absolute inset-0 h-full w-full object-cover"
         />
       )}
-      <div ref={wrapRef} className="pointer-events-none absolute inset-0" />
+      <div
+        ref={wrapRef}
+        className="pointer-events-none absolute inset-0"
+        style={{
+          cursor:
+            'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\'%3E%3Ccircle cx=\'8\' cy=\'8\' r=\'5\' fill=\'none\' stroke=\'%2359ADFF\' stroke-width=\'1.5\'/%3E%3C/svg%3E") 8 8, auto',
+        }}
+      />
     </div>
   );
 }

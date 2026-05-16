@@ -130,3 +130,17 @@ a {
   );
   z-index: 1;
 }
+
+.neural-cursor {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='5' fill='none' stroke='%2300b4ff' stroke-width='1.5'/%3E%3C/svg%3E") 8 8,
+    auto;
+}
+
+.neural-cursor a,
+.neural-cursor button,
+.neural-cursor [role="button"] {
+  cursor:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='5' fill='%2300b4ff' fill-opacity='0.8' stroke='%2300b4ff' stroke-width='1.5'/%3E%3C/svg%3E") 8 8,
+    pointer;
+}
