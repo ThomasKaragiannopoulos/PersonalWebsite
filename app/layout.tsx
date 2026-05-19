@@ -40,6 +40,27 @@ export const metadata: Metadata = {
     url: "https://karagiannopoulos.dev",
     siteName: "karagiannopoulos.dev",
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1536,
+        height: 1024,
+        alt: "Thomas Karagiannopoulos portfolio preview",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Thomas Karagiannopoulos | AI Engineer",
+    description:
+      "Building production NLP systems and retrieval pipelines for enterprise clients.",
+    images: ["/twitter-image.png"],
+  },
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/icon.png", sizes: "512x512", type: "image/png" }],
   },
   alternates: {
     canonical: "https://karagiannopoulos.dev",
