@@ -94,7 +94,7 @@ export default function RootLayout({
               description:
                 "AI engineer specialising in LLM systems, RAG pipelines, web design, and automations.",
               sameAs: [
-                "https://www.linkedin.com/in/thomas-karagiannopoulos",
+                "https://uk.linkedin.com/in/thomas-karagiannopoulos-a74560167",
               ],
             }),
           }}
