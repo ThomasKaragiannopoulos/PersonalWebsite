@@ -60,13 +60,15 @@ export function NeuralLoopSection({
     wrap.style.setProperty("--pointer-opacity", "0");
     wrap.style.setProperty("--pointer-radius", `${POINTER_RADIUS_PX}px`);
 
+    const EDGE_PAD = 80; // px dead zone at top/bottom near section transitions
+
     const handleMove = (event: MouseEvent) => {
       const rect = wrap.getBoundingClientRect();
       if (
         event.clientX < rect.left ||
         event.clientX > rect.right ||
-        event.clientY < rect.top ||
-        event.clientY > rect.bottom
+        event.clientY < rect.top + EDGE_PAD ||
+        event.clientY > rect.bottom - EDGE_PAD
       ) {
         wrap.style.setProperty("--pointer-opacity", "0");
         return;
