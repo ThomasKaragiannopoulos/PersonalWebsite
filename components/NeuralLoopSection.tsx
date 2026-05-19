@@ -60,26 +60,31 @@ export function NeuralLoopSection({
     wrap.style.setProperty("--pointer-opacity", "0");
     wrap.style.setProperty("--pointer-radius", `${POINTER_RADIUS_PX}px`);
 
-    const EDGE_PAD = 80; // px dead zone at top/bottom near section transitions
+    const EDGE_PAD = 80;
+    const FADE_ZONE = EDGE_PAD * 0.3; // 24px fade before dead zone
 
     const handleMove = (event: MouseEvent) => {
       const rect = wrap.getBoundingClientRect();
-      if (
-        event.clientX < rect.left ||
-        event.clientX > rect.right ||
-        event.clientY < rect.top + EDGE_PAD ||
-        event.clientY > rect.bottom - EDGE_PAD
-      ) {
+
+      if (event.clientX < rect.left || event.clientX > rect.right) {
+        wrap.style.setProperty("--pointer-opacity", "0");
+        return;
+      }
+
+      const edgeDist = Math.min(event.clientY - rect.top, rect.bottom - event.clientY);
+
+      if (edgeDist < EDGE_PAD) {
         wrap.style.setProperty("--pointer-opacity", "0");
         return;
       }
 
       const x = (event.clientX - rect.left) / rect.width;
       const y = (event.clientY - rect.top) / rect.height;
-
       wrap.style.setProperty("--pointer-x", `${(x * 100).toFixed(2)}%`);
       wrap.style.setProperty("--pointer-y", `${(y * 100).toFixed(2)}%`);
-      wrap.style.setProperty("--pointer-opacity", "1");
+
+      const opacity = Math.min((edgeDist - EDGE_PAD) / FADE_ZONE, 1);
+      wrap.style.setProperty("--pointer-opacity", opacity.toFixed(3));
     };
 
     const handleLeave = () => {
