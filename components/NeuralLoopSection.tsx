@@ -98,6 +98,7 @@ export function NeuralLoopSection({
 
   const showVideo = Boolean(videoSrc) && !videoFailed;
   const useCompositeMask = Boolean(alphaSrc) && hasFinePointer;
+  const mobileAlphaMask = Boolean(alphaSrc) && !hasFinePointer;
   const imageMaskStyle = useCompositeMask
     ? {
         maskImage: `linear-gradient(#fff 0 0), url("${alphaSrc}")`,
@@ -167,6 +168,14 @@ export function NeuralLoopSection({
                 "brightness(1.14)",
               ].join(""),
               willChange: "filter",
+              ...(mobileAlphaMask && alphaSrc ? {
+                WebkitMaskImage: `url("${alphaSrc}")`,
+                WebkitMaskMode: "luminance",
+                WebkitMaskSize: "100% 100%",
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                zIndex: 1,
+              } : {}),
             }}
           >
             <source src={videoSrc} type="video/mp4" />
@@ -177,8 +186,8 @@ export function NeuralLoopSection({
 
       {imageSrc ? (
         <div
-          className={`absolute inset-0 ${useCompositeMask ? "" : "opacity-60"}`}
-          style={imageMaskStyle}
+          className="absolute inset-0"
+          style={{ ...imageMaskStyle, ...(mobileAlphaMask ? { zIndex: 0 } : {}) }}
         >
           <Image
             src={imageSrc}
