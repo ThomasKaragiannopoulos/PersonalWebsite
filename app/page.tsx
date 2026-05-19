@@ -17,15 +17,15 @@ export default function Home() {
         />
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden px-[16%] text-center sm:px-[20%]">
           <div className="flex h-[36vh] max-h-[24rem] min-h-[14rem] flex-col items-center justify-between py-[8vh] sm:h-[42vh] sm:max-h-[30rem] sm:min-h-[18rem] sm:py-[10vh]">
-          <span className="font-mono text-[clamp(1.45rem,6.5vw,3rem)] font-bold uppercase tracking-widest text-white sm:text-[clamp(0.9rem,3.325vw,3rem)]">
+          <span className="font-mono text-[clamp(2.9rem,13vw,6rem)] font-bold uppercase tracking-widest text-white sm:text-[clamp(0.9rem,3.325vw,3rem)]">
             AI-engineered
           </span>
-          <span className="font-mono text-[clamp(0.55rem,1.9vw,0.85rem)] font-bold uppercase tracking-[1em] text-white sm:text-[clamp(0.45rem,0.92vw,0.85rem)] sm:tracking-[1.3em]">
+          <span className="font-mono text-[clamp(1.1rem,3.8vw,1.7rem)] font-bold uppercase tracking-[1em] text-white sm:text-[clamp(0.45rem,0.92vw,0.85rem)] sm:tracking-[1.3em]">
             AI done right
           </span>
           <a
             href="#contact"
-            className="pointer-events-auto border border-white/40 bg-white/[0.02] px-[clamp(0.7rem,3vw,2rem)] py-[clamp(0.32rem,1vw,0.6rem)] font-mono text-[clamp(0.5rem,1.75vw,0.75rem)] uppercase tracking-[0.25em] text-white backdrop-blur-sm transition-all hover:border-white/80 hover:bg-white/10 hover:text-white sm:px-[clamp(0.5rem,2vw,2rem)] sm:py-[clamp(0.25rem,0.5vw,0.6rem)] sm:text-[clamp(0.4rem,0.7vw,0.75rem)] sm:tracking-[0.3em]"
+            className="pointer-events-auto border border-white/40 bg-white/[0.02] px-[clamp(0.7rem,3vw,2rem)] py-[clamp(0.32rem,1vw,0.6rem)] font-mono text-[clamp(1rem,3.5vw,1.5rem)] uppercase tracking-[0.25em] text-white backdrop-blur-sm transition-all hover:border-white/80 hover:bg-white/10 hover:text-white sm:px-[clamp(0.5rem,2vw,2rem)] sm:py-[clamp(0.25rem,0.5vw,0.6rem)] sm:text-[clamp(0.4rem,0.7vw,0.75rem)] sm:tracking-[0.3em]"
           >
             [ CONTACT ]
           </a>
