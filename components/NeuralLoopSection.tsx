@@ -97,7 +97,7 @@ export function NeuralLoopSection({
   }, [playbackRate]);
 
   const showVideo = Boolean(videoSrc) && !videoFailed;
-  const useCompositeMask = Boolean(alphaSrc);
+  const useCompositeMask = Boolean(alphaSrc) && hasFinePointer;
   const imageMaskStyle = useCompositeMask
     ? {
         maskImage: `linear-gradient(#fff 0 0), url("${alphaSrc}")`,
@@ -177,7 +177,7 @@ export function NeuralLoopSection({
 
       {imageSrc ? (
         <div
-          className={`absolute inset-0 ${useCompositeMask ? "" : "opacity-78"}`}
+          className={`absolute inset-0 ${useCompositeMask ? "" : "opacity-90"}`}
           style={imageMaskStyle}
         >
           <Image
