@@ -29,21 +29,7 @@ export function NeuralLoopSection({
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoFailed, setVideoFailed] = useState(false);
-  const [supportsCompositeMask, setSupportsCompositeMask] = useState(false);
   const [hasFinePointer, setHasFinePointer] = useState(false);
-
-  useEffect(() => {
-    if (typeof CSS === "undefined") return;
-
-    const hasCompositeMaskSupport =
-      CSS.supports("mask-image", "linear-gradient(#fff 0 0)") &&
-      (
-        CSS.supports("mask-composite", "intersect") ||
-        CSS.supports("-webkit-mask-composite", "xor")
-      );
-
-    setSupportsCompositeMask(hasCompositeMaskSupport);
-  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -111,7 +97,7 @@ export function NeuralLoopSection({
   }, [playbackRate]);
 
   const showVideo = Boolean(videoSrc) && !videoFailed;
-  const useCompositeMask = Boolean(alphaSrc) && supportsCompositeMask;
+  const useCompositeMask = Boolean(alphaSrc);
   const imageMaskStyle = useCompositeMask
     ? {
         maskImage: `linear-gradient(#fff 0 0), url("${alphaSrc}")`,
