@@ -27,9 +27,13 @@ export const metadata: Metadata = {
   keywords: [
     "Thomas Karagiannopoulos",
     "AI Engineer",
+    "ai-engineered",
+    "AI-engineered",
     "LLM Systems",
     "RAG",
     "Agents",
+    "Web Design",
+    "Automations",
     "Netcompany",
     "Oinoway",
   ],
@@ -78,6 +82,23 @@ export default function RootLayout({
       className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} h-full scroll-smooth overflow-x-hidden`}
     >
       <body className="min-h-full overflow-x-hidden">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Thomas Karagiannopoulos",
+              url: "https://karagiannopoulos.dev",
+              jobTitle: "AI Engineer",
+              description:
+                "AI engineer specialising in LLM systems, RAG pipelines, web design, and automations.",
+              sameAs: [
+                "https://www.linkedin.com/in/thomas-karagiannopoulos",
+              ],
+            }),
+          }}
+        />
         {children}
       </body>
     </html>
