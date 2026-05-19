@@ -5,7 +5,7 @@ const SECTION_LOOP_RATE = 1;
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col bg-[var(--background)] text-[var(--foreground)]">
+    <main className="neural-cursor flex min-h-screen flex-col bg-[var(--background)] text-[var(--foreground)]">
       <section id="sandbox" className="neural-cursor relative h-screen w-full overflow-hidden bg-black animate-[fadeIn_1.2s_ease-out_0.4s_both]">
         <NeuralLoopSection
           imageSrc="/Section0.png"
