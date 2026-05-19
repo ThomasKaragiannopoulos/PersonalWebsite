@@ -103,6 +103,7 @@ export function NeuralLoopSection({
         maskImage: `linear-gradient(#fff 0 0), url("${alphaSrc}")`,
         WebkitMaskImage: `linear-gradient(#fff 0 0), url("${alphaSrc}")`,
         maskMode: "alpha, luminance" as const,
+        WebkitMaskMode: "alpha, luminance" as const,
         maskSize: "100% 100%, cover",
         WebkitMaskSize: "100% 100%, cover",
         maskPosition: "center, center",
