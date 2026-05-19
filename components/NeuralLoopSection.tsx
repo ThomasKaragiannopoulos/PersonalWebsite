@@ -28,6 +28,9 @@ export function NeuralLoopSection({
 }: NeuralLoopSectionProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const maskCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const mobileRafRef = useRef<number>(0);
   const [videoFailed, setVideoFailed] = useState(false);
   const [hasFinePointer, setHasFinePointer] = useState(false);
 
@@ -96,9 +99,63 @@ export function NeuralLoopSection({
     }
   }, [playbackRate]);
 
+  // Mobile: Canvas 2D alpha-key — converts alphaSrc luminance → alpha once,
+  // then composites each video frame through that mask. Same logic as the old GLSL shader.
+  useEffect(() => {
+    if (hasFinePointer || !alphaSrc || !videoSrc) return;
+
+    const canvas = canvasRef.current;
+    const video = videoRef.current;
+    const wrap = wrapRef.current;
+    if (!canvas || !video || !wrap) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const img = new window.Image();
+    img.onload = () => {
+      const mc = document.createElement("canvas");
+      mc.width = img.naturalWidth;
+      mc.height = img.naturalHeight;
+      const mctx = mc.getContext("2d");
+      if (!mctx) return;
+      mctx.drawImage(img, 0, 0);
+      const d = mctx.getImageData(0, 0, mc.width, mc.height);
+      for (let i = 0; i < d.data.length; i += 4) {
+        const lum = d.data[i] * 0.299 + d.data[i + 1] * 0.587 + d.data[i + 2] * 0.114;
+        d.data[i] = 255; d.data[i + 1] = 255; d.data[i + 2] = 255;
+        d.data[i + 3] = lum;
+      }
+      mctx.putImageData(d, 0, 0);
+      maskCanvasRef.current = mc;
+    };
+    img.src = alphaSrc;
+
+    const draw = () => {
+      mobileRafRef.current = requestAnimationFrame(draw);
+      const w = wrap.clientWidth;
+      const h = wrap.clientHeight;
+      if (canvas.width !== w) canvas.width = w;
+      if (canvas.height !== h) canvas.height = h;
+      if (!maskCanvasRef.current || video.readyState < 2) return;
+      ctx.clearRect(0, 0, w, h);
+      ctx.drawImage(video, 0, 0, w, h);
+      ctx.globalCompositeOperation = "destination-in";
+      ctx.drawImage(maskCanvasRef.current, 0, 0, w, h);
+      ctx.globalCompositeOperation = "source-over";
+    };
+
+    mobileRafRef.current = requestAnimationFrame(draw);
+
+    return () => {
+      cancelAnimationFrame(mobileRafRef.current);
+      maskCanvasRef.current = null;
+    };
+  }, [hasFinePointer, alphaSrc, videoSrc]);
+
   const showVideo = Boolean(videoSrc) && !videoFailed;
   const useCompositeMask = Boolean(alphaSrc) && hasFinePointer;
-  const mobileAlphaMask = Boolean(alphaSrc) && !hasFinePointer;
+  const useMobileCanvas = Boolean(alphaSrc) && !hasFinePointer;
   const imageMaskStyle = useCompositeMask
     ? {
         maskImage: `linear-gradient(#fff 0 0), url("${alphaSrc}")`,
@@ -160,7 +217,7 @@ export function NeuralLoopSection({
             preload="metadata"
             poster={imageSrc}
             onError={() => setVideoFailed(true)}
-            className="absolute inset-0 h-full w-full object-cover opacity-92"
+            className={`absolute inset-0 h-full w-full object-cover opacity-92 ${useMobileCanvas ? "opacity-0" : ""}`}
             style={{
               filter: [
                 "contrast(1.35) ",
@@ -178,7 +235,7 @@ export function NeuralLoopSection({
 
       {imageSrc ? (
         <div
-          className={`absolute inset-0 ${useCompositeMask ? "" : "opacity-70"}`}
+          className="absolute inset-0"
           style={imageMaskStyle}
         >
           <Image
@@ -190,6 +247,16 @@ export function NeuralLoopSection({
           />
           <div className={`absolute inset-0 ${useCompositeMask ? "bg-black/42" : "bg-black/18"}`} />
         </div>
+      ) : null}
+
+      {useMobileCanvas && showVideo ? (
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 h-full w-full"
+          style={{
+            filter: "contrast(1.35) saturate(1.9) brightness(1.14)",
+          }}
+        />
       ) : null}
 
       {showTopBlend ? (
