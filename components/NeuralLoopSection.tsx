@@ -131,8 +131,11 @@ export function NeuralLoopSection({
     };
     img.src = alphaSrc;
 
-    const draw = () => {
+    let lastDrawn = 0;
+    const draw = (now: number) => {
       mobileRafRef.current = requestAnimationFrame(draw);
+      if (now - lastDrawn < 33) return; // ~30 fps
+      lastDrawn = now;
       const w = wrap.clientWidth;
       const h = wrap.clientHeight;
       if (canvas.width !== w) canvas.width = w;
