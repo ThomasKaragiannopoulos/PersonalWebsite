@@ -177,7 +177,7 @@ export function NeuralLoopSection({
 
       {imageSrc ? (
         <div
-          className={`absolute inset-0 ${useCompositeMask ? "" : "opacity-90"}`}
+          className={`absolute inset-0 ${useCompositeMask ? "" : "opacity-60"}`}
           style={imageMaskStyle}
         >
           <Image
