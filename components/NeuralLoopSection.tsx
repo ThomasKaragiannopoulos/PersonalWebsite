@@ -131,6 +131,14 @@ export function NeuralLoopSection({
     };
     img.src = alphaSrc;
 
+    // Compute object-cover source crop: returns [sx, sy, sw, sh]
+    const coverCrop = (srcW: number, srcH: number, dstW: number, dstH: number): [number, number, number, number] => {
+      const scale = Math.max(dstW / srcW, dstH / srcH);
+      const sw = dstW / scale;
+      const sh = dstH / scale;
+      return [(srcW - sw) / 2, (srcH - sh) / 2, sw, sh];
+    };
+
     let lastDrawn = 0;
     const draw = (now: number) => {
       mobileRafRef.current = requestAnimationFrame(draw);
@@ -142,9 +150,12 @@ export function NeuralLoopSection({
       if (canvas.height !== h) canvas.height = h;
       if (!maskCanvasRef.current || video.readyState < 2) return;
       ctx.clearRect(0, 0, w, h);
-      ctx.drawImage(video, 0, 0, w, h);
+      const [vsx, vsy, vsw, vsh] = coverCrop(video.videoWidth || w, video.videoHeight || h, w, h);
+      ctx.drawImage(video, vsx, vsy, vsw, vsh, 0, 0, w, h);
       ctx.globalCompositeOperation = "destination-in";
-      ctx.drawImage(maskCanvasRef.current, 0, 0, w, h);
+      const mc = maskCanvasRef.current;
+      const [msx, msy, msw, msh] = coverCrop(mc.width, mc.height, w, h);
+      ctx.drawImage(mc, msx, msy, msw, msh, 0, 0, w, h);
       ctx.globalCompositeOperation = "source-over";
     };
 
