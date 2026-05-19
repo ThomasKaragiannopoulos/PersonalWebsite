@@ -5,9 +5,16 @@ const SECTION_LOOP_RATE = 1;
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
+    <main className="flex min-h-screen flex-col bg-[var(--background)] text-[var(--foreground)]">
       <section id="sandbox" className="neural-cursor relative h-screen w-full overflow-hidden bg-black">
-        <NeuralLoopSection imageSrc="/Section0.png" alphaSrc="/Section0Alpha.png" videoSrc={SECTION_LOOP_SRC} playbackRate={SECTION_LOOP_RATE} />
+        <NeuralLoopSection
+          imageSrc="/Section0.png"
+          alphaSrc="/Section0Alpha.png"
+          videoSrc={SECTION_LOOP_SRC}
+          playbackRate={SECTION_LOOP_RATE}
+          showTopBlend={false}
+          showBottomBlend
+        />
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden px-[16%] text-center sm:px-[20%]">
           <div className="flex h-[36vh] max-h-[24rem] min-h-[14rem] flex-col items-center justify-between py-[8vh] sm:h-[42vh] sm:max-h-[30rem] sm:min-h-[18rem] sm:py-[10vh]">
           <span className="font-mono text-[clamp(1.45rem,6.5vw,3rem)] font-bold uppercase tracking-widest text-white sm:text-[clamp(0.9rem,3.325vw,3rem)]">
@@ -28,7 +35,7 @@ export default function Home() {
 
       <section
         id="web-design"
-        className="neural-cursor relative flex min-h-screen flex-col justify-center overflow-hidden border-t border-white/8 px-6 sm:px-8 lg:px-12"
+        className="neural-cursor relative mt-20 flex min-h-screen flex-col justify-center overflow-hidden px-6 sm:mt-24 sm:px-8 lg:px-12"
         style={{
           background:
             "radial-gradient(ellipse 70% 50% at 10% 80%, rgba(0,180,255,0.07) 0%, transparent 70%)",
@@ -47,7 +54,7 @@ export default function Home() {
 
       <section
         id="ai-systems"
-        className="neural-cursor relative flex min-h-screen flex-col justify-center overflow-hidden border-t border-white/8 px-6 sm:px-8 lg:px-12"
+        className="neural-cursor relative mt-20 flex min-h-screen flex-col justify-center overflow-hidden px-6 sm:mt-24 sm:px-8 lg:px-12"
         style={{
           background:
             "radial-gradient(ellipse 65% 45% at 85% 20%, rgba(0,180,255,0.08) 0%, transparent 70%)",
@@ -68,7 +75,7 @@ export default function Home() {
 
       <section
         id="automations"
-        className="neural-cursor relative flex min-h-screen flex-col justify-center overflow-hidden border-t border-white/8 px-6 sm:px-8 lg:px-12"
+        className="neural-cursor relative mt-20 flex min-h-screen flex-col justify-center overflow-hidden px-6 sm:mt-24 sm:px-8 lg:px-12"
         style={{
           background:
             "radial-gradient(ellipse 68% 48% at 15% 25%, rgba(0,180,255,0.08) 0%, transparent 72%)",
@@ -87,7 +94,7 @@ export default function Home() {
 
       <section
         id="contact"
-        className="neural-cursor relative flex min-h-screen flex-col items-center justify-center border-t border-white/8 px-6 text-center sm:px-8 lg:px-12"
+        className="neural-cursor relative mt-20 flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center sm:mt-24 sm:px-8 lg:px-12"
         style={{
           background:
             "radial-gradient(ellipse 60% 50% at 50% 100%, rgba(0,180,255,0.07) 0%, transparent 70%)",

@@ -10,6 +10,8 @@ interface NeuralLoopSectionProps {
   playbackRate?: number;
   flipX?: boolean;
   flipY?: boolean;
+  showTopBlend?: boolean;
+  showBottomBlend?: boolean;
 }
 
 const POINTER_RADIUS_PX = 180;
@@ -21,6 +23,8 @@ export function NeuralLoopSection({
   playbackRate = 1,
   flipX = false,
   flipY = false,
+  showTopBlend = true,
+  showBottomBlend = true,
 }: NeuralLoopSectionProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -29,6 +33,15 @@ export function NeuralLoopSection({
   useEffect(() => {
     const wrap = wrapRef.current;
     if (!wrap) return;
+
+    const canHover =
+      typeof window !== "undefined" &&
+      window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    if (!canHover) {
+      wrap.style.setProperty("--pointer-opacity", "0");
+      return;
+    }
 
     wrap.style.setProperty("--pointer-x", "50%");
     wrap.style.setProperty("--pointer-y", "50%");
@@ -168,6 +181,13 @@ export function NeuralLoopSection({
           />
           <div className="absolute inset-0 bg-black/42" />
         </div>
+      ) : null}
+
+      {showTopBlend ? (
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[var(--background)] via-[rgba(10,10,10,0.3)] via-55% to-transparent" />
+      ) : null}
+      {showBottomBlend ? (
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[var(--background)] via-[rgba(10,10,10,0.7)] to-transparent" />
       ) : null}
 
       <div
