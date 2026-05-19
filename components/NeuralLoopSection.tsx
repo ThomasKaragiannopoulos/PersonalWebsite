@@ -236,7 +236,7 @@ export function NeuralLoopSection({
         </>
       ) : null}
 
-      {imageSrc && !useMobileCanvas ? (
+      {imageSrc ? (
         <div
           className="absolute inset-0"
           style={imageMaskStyle}
