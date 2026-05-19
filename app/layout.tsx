@@ -20,7 +20,7 @@ const monoFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://karagiannopoulos.dev"),
+  metadataBase: new URL("https://www.ai-engineered.com"),
   title: "Thomas Karagiannopoulos | AI Engineer",
   description:
     "Personal portfolio for Thomas Karagiannopoulos, focused on LLM systems, RAG pipelines, retrieval engineering, and production AI products.",
@@ -41,8 +41,8 @@ export const metadata: Metadata = {
     title: "Thomas Karagiannopoulos | AI Engineer",
     description:
       "Building production NLP systems and retrieval pipelines for enterprise clients.",
-    url: "https://karagiannopoulos.dev",
-    siteName: "karagiannopoulos.dev",
+    url: "https://www.ai-engineered.com",
+    siteName: "AI-engineered",
     type: "website",
     images: [
       {
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     apple: [{ url: "/icon.png", sizes: "512x512", type: "image/png" }],
   },
   alternates: {
-    canonical: "https://karagiannopoulos.dev",
+    canonical: "https://www.ai-engineered.com",
   },
 };
 
@@ -89,7 +89,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               name: "Thomas Karagiannopoulos",
-              url: "https://karagiannopoulos.dev",
+              url: "https://www.ai-engineered.com",
               jobTitle: "AI Engineer",
               description:
                 "AI engineer specialising in LLM systems, RAG pipelines, web design, and automations.",
