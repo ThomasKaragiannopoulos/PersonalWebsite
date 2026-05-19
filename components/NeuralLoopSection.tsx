@@ -29,6 +29,20 @@ export function NeuralLoopSection({
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoFailed, setVideoFailed] = useState(false);
+  const [supportsCompositeMask, setSupportsCompositeMask] = useState(false);
+
+  useEffect(() => {
+    if (typeof CSS === "undefined") return;
+
+    const hasCompositeMaskSupport =
+      CSS.supports("mask-image", "linear-gradient(#fff 0 0)") &&
+      (
+        CSS.supports("mask-composite", "intersect") ||
+        CSS.supports("-webkit-mask-composite", "xor")
+      );
+
+    setSupportsCompositeMask(hasCompositeMaskSupport);
+  }, []);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -88,7 +102,7 @@ export function NeuralLoopSection({
   }, [playbackRate]);
 
   const showVideo = Boolean(videoSrc) && !videoFailed;
-  const imageMaskStyle = alphaSrc
+  const imageMaskStyle = alphaSrc && supportsCompositeMask
     ? {
         maskImage: `linear-gradient(#fff 0 0), url("${alphaSrc}")`,
         WebkitMaskImage: `linear-gradient(#fff 0 0), url("${alphaSrc}")`,
@@ -104,7 +118,7 @@ export function NeuralLoopSection({
       }
     : undefined;
 
-  const cursorMaskStyle = alphaSrc
+  const cursorMaskStyle = alphaSrc && supportsCompositeMask
     ? {
         maskImage: `radial-gradient(circle var(--pointer-radius) at var(--pointer-x) var(--pointer-y), rgba(0,0,0,1) 0%, rgba(0,0,0,0.92) 45%, rgba(0,0,0,0) 72%), url("${alphaSrc}")`,
         WebkitMaskImage: `radial-gradient(circle var(--pointer-radius) at var(--pointer-x) var(--pointer-y), rgba(0,0,0,1) 0%, rgba(0,0,0,0.92) 45%, rgba(0,0,0,0) 72%), url("${alphaSrc}")`,
