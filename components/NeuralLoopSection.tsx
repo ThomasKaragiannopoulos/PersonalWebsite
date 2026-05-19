@@ -168,14 +168,6 @@ export function NeuralLoopSection({
                 "brightness(1.14)",
               ].join(""),
               willChange: "filter",
-              ...(mobileAlphaMask && alphaSrc ? {
-                WebkitMaskImage: `url("${alphaSrc}")`,
-                WebkitMaskMode: "luminance",
-                WebkitMaskSize: "100% 100%",
-                WebkitMaskRepeat: "no-repeat",
-                WebkitMaskPosition: "center",
-                zIndex: 1,
-              } : {}),
             }}
           >
             <source src={videoSrc} type="video/mp4" />
@@ -186,8 +178,8 @@ export function NeuralLoopSection({
 
       {imageSrc ? (
         <div
-          className="absolute inset-0"
-          style={{ ...imageMaskStyle, ...(mobileAlphaMask ? { zIndex: 0 } : {}) }}
+          className={`absolute inset-0 ${useCompositeMask ? "" : "opacity-70"}`}
+          style={imageMaskStyle}
         >
           <Image
             src={imageSrc}
