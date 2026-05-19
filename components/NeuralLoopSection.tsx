@@ -30,6 +30,7 @@ export function NeuralLoopSection({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoFailed, setVideoFailed] = useState(false);
   const [supportsCompositeMask, setSupportsCompositeMask] = useState(false);
+  const [hasFinePointer, setHasFinePointer] = useState(false);
 
   useEffect(() => {
     if (typeof CSS === "undefined") return;
@@ -42,6 +43,14 @@ export function NeuralLoopSection({
       );
 
     setSupportsCompositeMask(hasCompositeMaskSupport);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    setHasFinePointer(
+      window.matchMedia("(hover: hover) and (pointer: fine)").matches,
+    );
   }, []);
 
   useEffect(() => {
@@ -102,7 +111,8 @@ export function NeuralLoopSection({
   }, [playbackRate]);
 
   const showVideo = Boolean(videoSrc) && !videoFailed;
-  const imageMaskStyle = alphaSrc && supportsCompositeMask
+  const useCompositeMask = Boolean(alphaSrc) && supportsCompositeMask;
+  const imageMaskStyle = useCompositeMask
     ? {
         maskImage: `linear-gradient(#fff 0 0), url("${alphaSrc}")`,
         WebkitMaskImage: `linear-gradient(#fff 0 0), url("${alphaSrc}")`,
@@ -118,7 +128,7 @@ export function NeuralLoopSection({
       }
     : undefined;
 
-  const cursorMaskStyle = alphaSrc && supportsCompositeMask
+  const cursorMaskStyle = useCompositeMask
     ? {
         maskImage: `radial-gradient(circle var(--pointer-radius) at var(--pointer-x) var(--pointer-y), rgba(0,0,0,1) 0%, rgba(0,0,0,0.92) 45%, rgba(0,0,0,0) 72%), url("${alphaSrc}")`,
         WebkitMaskImage: `radial-gradient(circle var(--pointer-radius) at var(--pointer-x) var(--pointer-y), rgba(0,0,0,1) 0%, rgba(0,0,0,0.92) 45%, rgba(0,0,0,0) 72%), url("${alphaSrc}")`,
@@ -179,7 +189,10 @@ export function NeuralLoopSection({
       ) : null}
 
       {imageSrc ? (
-        <div className="absolute inset-0" style={imageMaskStyle}>
+        <div
+          className={`absolute inset-0 ${useCompositeMask ? "" : "opacity-78"}`}
+          style={imageMaskStyle}
+        >
           <Image
             src={imageSrc}
             alt=""
@@ -187,7 +200,7 @@ export function NeuralLoopSection({
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-black/42" />
+          <div className={`absolute inset-0 ${useCompositeMask ? "bg-black/42" : "bg-black/18"}`} />
         </div>
       ) : null}
 
