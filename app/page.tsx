@@ -16,7 +16,7 @@ export default function Home() {
           showBottomBlend
         />
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden px-[16%] text-center sm:px-[20%]">
-          <div className="flex h-[36vh] max-h-[24rem] min-h-[14rem] flex-col items-center justify-between py-[8vh] sm:h-[42vh] sm:max-h-[30rem] sm:min-h-[18rem] sm:py-[10vh]">
+          <div className="flex h-[36vh] max-h-[24rem] min-h-[14rem] flex-col items-center justify-between py-[8vh] sm:h-[42vh] sm:max-h-[30rem] sm:min-h-[18rem] sm:py-[10vh] animate-[fadeIn_1.2s_ease-out_0.4s_both]">
           <span className="font-mono text-[clamp(2.03rem,9.1vw,4.2rem)] font-bold uppercase tracking-widest text-white sm:text-[clamp(0.9rem,3.325vw,3rem)]">
             AI-engineered
           </span>
