@@ -70,7 +70,7 @@ export default function LoadingScreen() {
 
   return (
     <div
-      className="loader-overlay"
+      className="loader-overlay neural-cursor"
       style={{
         opacity: overlayOut ? 0 : 1,
         pointerEvents: overlayOut ? 'none' : 'all',
@@ -95,7 +95,7 @@ export default function LoadingScreen() {
             priority
           />
         </div>
-        <span className="loader-label-bottom">Loading</span>
+        <span className="loader-label-bottom">LOADING...</span>
       </div>
     </div>
   );
