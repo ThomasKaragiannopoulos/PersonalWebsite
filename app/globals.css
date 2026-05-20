@@ -130,6 +130,7 @@ a {
 
 .loader-sigil-wrap {
   width: clamp(220px, 40vw, 380px);
+  aspect-ratio: 380 / 220;
   line-height: 0;
 }
 

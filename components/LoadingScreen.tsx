@@ -91,7 +91,7 @@ export default function LoadingScreen() {
             width={380}
             height={220}
             className="loader-sigil"
-            style={{ clipPath: `inset(0 ${clip}% 0 0)` }}
+            style={{ width: '100%', height: 'auto', clipPath: `inset(0 ${clip}% 0 0)` }}
             priority
           />
         </div>
