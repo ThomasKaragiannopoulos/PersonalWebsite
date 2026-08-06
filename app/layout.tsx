@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Inter, Instrument_Serif, JetBrains_Mono, Special_Elite } from "next/font/google";
 import "./globals.css";
-import LoadingScreen from "@/components/LoadingScreen";
 
 const bodyFont = Inter({
   variable: "--font-body",
@@ -96,7 +95,6 @@ export default function RootLayout({
       className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} ${noirFont.variable} ${typewriterFont.variable} h-full scroll-smooth overflow-x-hidden`}
     >
       <body className="min-h-full overflow-x-hidden">
-        <LoadingScreen />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

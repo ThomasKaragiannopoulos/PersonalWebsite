@@ -130,74 +130,74 @@ a {
   background: rgba(255, 255, 255, 0.07);
 }
 
-/* Loading Screen */
-.loader-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 1s ease;
+/* Load-in animation: staggered fade-up on first paint, hero content only */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.loader-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  transition: opacity 0.8s ease, transform 0.8s ease;
+.load-in {
+  opacity: 0;
+  animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--load-in-delay, 0s);
 }
 
-.loader-label-top {
-  font-family: var(--font-mono), monospace;
-  font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: #0711a2;
+@media (prefers-reduced-motion: reduce) {
+  .load-in {
+    opacity: 1;
+    animation: none;
+  }
 }
 
-.loader-sigil-wrap {
-  width: clamp(220px, 40vw, 380px);
-  height: clamp(127px, 23.16vw, 220px);
-  line-height: 0;
-  margin-top: -3rem;
-  margin-bottom: 6rem;
+/* Typewriter-style text reveal: characters appear via a widening clip, not a fade */
+@keyframes type-in {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }
 
-.loader-sigil {
-  width: 100%;
-  height: auto;
-  filter: invert(1) sepia(1) hue-rotate(142deg) saturate(5);
-  mix-blend-mode: screen;
+.type-in {
+  display: inline-block;
+  overflow: hidden;
+  max-width: 100%;
+  white-space: nowrap;
+  vertical-align: bottom;
+  width: 0;
+  animation: type-in 1s steps(var(--type-steps, 20), end) forwards;
+  animation-delay: var(--load-in-delay, 0s);
 }
 
-.loader-label-bottom {
-  font-family: var(--font-mono), monospace;
-  font-weight: 400;
-  font-size: 1.2rem;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: #0711a2;
+@media (prefers-reduced-motion: reduce) {
+  .type-in {
+    width: 100%;
+    animation: none;
+  }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+/* Persistent blinking cursor, appended after typewriter-styled text */
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.cursor {
-  display: inline;
-  margin-left: 0.1em;
-  color: white;
-  animation: blink 3s step-start infinite;
+.type-cursor {
+  display: inline-block;
+  margin-left: 0.15em;
+  animation: cursor-blink 1s step-end infinite;
 }
 
 .terminal-glow {
@@ -266,8 +266,10 @@ a {
   -webkit-mask-size: 100% 130vh;
   mask-position: center 0;
   -webkit-mask-position: center 0;
+  /* transform, not background-position, so scrolling never fights this for the main thread */
   animation: etch-scroll 70s linear infinite;
-  will-change: background-position, mask-position;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .etch-layer-b {
@@ -276,14 +278,10 @@ a {
 
 @keyframes etch-scroll {
   from {
-    background-position: center 0;
-    mask-position: center 0;
-    -webkit-mask-position: center 0;
+    transform: translateY(0);
   }
   to {
-    background-position: center -130vh;
-    mask-position: center -130vh;
-    -webkit-mask-position: center -130vh;
+    transform: translateY(-130vh);
   }
 }
 

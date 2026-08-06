@@ -10,12 +10,26 @@ export default function Home() {
         <EtchBackground image="/bg/hero.png" />
         <div className="relative z-10 mx-auto max-w-4xl">
           <h1 className="font-noir noir-title mt-6 text-[clamp(2.75rem,9vw,6rem)] leading-[0.95]">
-            AI-engineered
+            <span
+              className="type-in"
+              style={{ "--type-steps": 13, "--load-in-delay": "0.1s", animationDuration: "0.9s" } as React.CSSProperties}
+            >
+              AI-engineered
+            </span>
           </h1>
           <p className="font-typewriter mx-auto mt-8 max-w-2xl text-sm leading-8 text-[var(--muted)] sm:text-base">
-            engineered with Actual Intelligence
+            <span
+              className="type-in"
+              style={{ "--type-steps": 36, "--load-in-delay": "1.1s", animationDuration: "1.4s" } as React.CSSProperties}
+            >
+              engineered with Actual Intelligence
+            </span>
+            <span className="type-cursor">▎</span>
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <div
+            className="load-in mt-10 flex flex-wrap items-center justify-center gap-4"
+            style={{ "--load-in-delay": "2.6s" } as React.CSSProperties}
+          >
             <GlassButton href="#contact">contact</GlassButton>
           </div>
         </div>
@@ -34,7 +48,7 @@ export default function Home() {
             <EtchBackground image={`/bg/${pillar.id}.png`} />
             <div className="relative z-10 mx-auto w-full max-w-6xl">
               <p className="font-typewriter text-xs uppercase tracking-[0.25em] text-[var(--muted)]">
-                {String(i + 1).padStart(2, "0")} / {pillar.title}
+                {String(i + 1).padStart(2, "0")}/{String(pillars.length).padStart(2, "0")}| {pillar.title}
               </p>
 
               <div
@@ -44,6 +58,7 @@ export default function Home() {
               >
                 <p className="font-typewriter max-w-xl text-sm leading-7 text-[var(--muted)] sm:text-base">
                   {pillar.description}
+                  <span className="type-cursor">▎</span>
                 </p>
 
                 {study && study.metrics.length > 0 && (
