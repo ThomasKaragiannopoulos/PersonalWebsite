@@ -52,6 +52,37 @@ a {
   font-family: var(--font-mono), monospace;
 }
 
+/* Experimental: film-noir poster type, hero section only, for now */
+.font-noir {
+  font-family: var(--font-noir), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.noir-title {
+  color: #f5f4ee;
+  text-shadow:
+    -1.5px -1.5px 0 #000,
+    1.5px -1.5px 0 #000,
+    -1.5px 1.5px 0 #000,
+    1.5px 1.5px 0 #000,
+    0 0 42px rgba(0, 0, 0, 0.6);
+}
+
+.noir-outline {
+  filter:
+    drop-shadow(1.5px 0 0 #000)
+    drop-shadow(-1.5px 0 0 #000)
+    drop-shadow(0 1.5px 0 #000)
+    drop-shadow(0 -1.5px 0 #000);
+}
+
+/* Experimental: typewriter feel for the hero subheading, for now */
+.font-typewriter {
+  font-family: var(--font-typewriter), monospace;
+  letter-spacing: 0.01em;
+}
+
 .section-kicker {
   color: var(--muted);
   font-family: var(--font-mono), monospace;
@@ -202,4 +233,117 @@ a {
   cursor:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Ccircle cx='8' cy='8' r='5' fill='%2300b4ff' fill-opacity='0.8' stroke='%2300b4ff' stroke-width='1.5'/%3E%3C/svg%3E") 8 8,
     pointer;
+}
+
+/* Etched-collage ambient background: literary-interpretation-engine renderings, dimmed.
+   Two copies of the same image, offset by half a loop cycle and each faded at
+   its own tile edges, so at any seam one copy is fading out while the other
+   fades in with real picture content underneath — a content crossfade instead
+   of a visible color band. */
+.etch-wrap {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0.3;
+  mix-blend-mode: screen;
+  filter: grayscale(1) contrast(1.1) blur(1.5px);
+}
+
+.etch-layer {
+  position: absolute;
+  inset: 0;
+  background-image: var(--etch-image);
+  background-repeat: repeat-y;
+  background-position: center 0;
+  background-size: 100% 130vh;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%, transparent 100%);
+  mask-repeat: repeat-y;
+  -webkit-mask-repeat: repeat-y;
+  mask-size: 100% 130vh;
+  -webkit-mask-size: 100% 130vh;
+  mask-position: center 0;
+  -webkit-mask-position: center 0;
+  animation: etch-scroll 70s linear infinite;
+  will-change: background-position, mask-position;
+}
+
+.etch-layer-b {
+  animation-delay: -35s;
+}
+
+@keyframes etch-scroll {
+  from {
+    background-position: center 0;
+    mask-position: center 0;
+    -webkit-mask-position: center 0;
+  }
+  to {
+    background-position: center -130vh;
+    mask-position: center -130vh;
+    -webkit-mask-position: center -130vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .etch-layer {
+    animation: none;
+  }
+  .etch-layer-b {
+    display: none;
+  }
+}
+
+/* Soft blend between stacked sections, replacing the hard section-to-section cut */
+.section-blend {
+  position: relative;
+}
+
+.section-blend::before,
+.section-blend::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: 16vh;
+  pointer-events: none;
+}
+
+.section-blend::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--background), transparent);
+}
+
+.section-blend::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--background), transparent);
+}
+
+/* RGB chromatic-split text: reserved for hero flourish moments */
+.rgb-split {
+  position: relative;
+  display: inline-block;
+  color: var(--foreground);
+}
+
+.rgb-split::before,
+.rgb-split::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  mix-blend-mode: screen;
+}
+
+.rgb-split::before {
+  color: #ff2b3d;
+  transform: translate(-2px, 1px);
+}
+
+.rgb-split::after {
+  color: #2b7bff;
+  transform: translate(2px, -1px);
 }

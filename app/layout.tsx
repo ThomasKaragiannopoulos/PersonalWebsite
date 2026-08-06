@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Bebas_Neue, Inter, Instrument_Serif, JetBrains_Mono, Special_Elite } from "next/font/google";
 import "./globals.css";
 import LoadingScreen from "@/components/LoadingScreen";
 
@@ -18,6 +18,19 @@ const monoFont = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
+});
+
+// Experimental: film-noir poster type, hero section only, for now.
+const noirFont = Bebas_Neue({
+  variable: "--font-noir",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const typewriterFont = Special_Elite({
+  variable: "--font-typewriter",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -80,7 +93,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} h-full scroll-smooth overflow-x-hidden`}
+      className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} ${noirFont.variable} ${typewriterFont.variable} h-full scroll-smooth overflow-x-hidden`}
     >
       <body className="min-h-full overflow-x-hidden">
         <LoadingScreen />
