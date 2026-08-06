@@ -253,7 +253,12 @@ a {
 
 .etch-layer {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* one tile taller than the wrapper, so sliding it up by one tile (100%)
+     never drags its bottom edge above the wrapper's bottom edge */
+  height: calc(100% + 130vh);
   background-image: var(--etch-image);
   background-repeat: repeat-y;
   background-position: center 0;
