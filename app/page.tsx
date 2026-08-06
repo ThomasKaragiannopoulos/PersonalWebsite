@@ -43,9 +43,12 @@ export default function Home() {
             <EtchBackground image={`/bg/${pillar.id}.png`} />
             <div className="relative z-10 mx-auto w-full max-w-6xl">
               <p className="font-typewriter text-xs uppercase tracking-[0.25em] text-[var(--muted)]">
-                {String(i + 1).padStart(2, "0")}/{String(pillars.length).padStart(2, "0")}| {pillar.title}
+                {String(i + 1).padStart(2, "0")}/{String(pillars.length).padStart(2, "0")}
                 <span className="type-cursor">▎</span>
               </p>
+              <h2 className="font-noir noir-title mt-2 max-w-2xl text-4xl leading-[0.95] sm:text-5xl">
+                {pillar.title}
+              </h2>
 
               <div
                 className={`mt-8 grid gap-6 sm:items-start sm:gap-10 ${
