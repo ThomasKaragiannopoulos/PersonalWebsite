@@ -100,7 +100,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     flowVariant: "zigzag",
     stack: ["Next.js", "TypeScript", "PostgreSQL", "pgvector", "GPT-4o"],
-    href: "https://oinoway.gr",
+    href: "https://oinoway.com",
     linkLabel: "Visit Oinoway",
   },
   {

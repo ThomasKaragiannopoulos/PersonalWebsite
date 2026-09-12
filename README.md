@@ -1,6 +1,6 @@
 # Personal Website
 
-Portfolio site for Thomas Karagiannopoulos — AI Engineer at Netcompany, co-founder of [Oinoway](https://oinoway.gr).
+Portfolio site for Thomas Karagiannopoulos — AI Engineer at Netcompany, co-founder of [Oinoway](https://oinoway.com).
 
 **Live:** https://personal-website-eight-puce-74.vercel.app
 
