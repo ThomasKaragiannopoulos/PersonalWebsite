@@ -138,20 +138,6 @@ if (headline) {
   addEventListener("load", fit);
   addEventListener("resize", fit);
 
-  // live latency: real round trip from this browser to the server, re-measured every 4s
-  const latency = document.querySelector(".latency");
-  const ping = async () => {
-    if (document.hidden) return;
-    const t = performance.now();
-    try {
-      await fetch(location.href, { method: "HEAD", cache: "no-store" });
-      latency.textContent = Math.round(performance.now() - t) + "ms";
-    } catch {
-      latency.textContent = "offline";
-    }
-  };
-  ping();
-  setInterval(ping, 4000);
 
   // rotating service word
   const word = document.querySelector(".rotator__word");
