@@ -68,6 +68,8 @@ body.is-leaving main { opacity: 0; filter: blur(6px); }
 .mark--br { bottom: 6px; right: calc(var(--pad) - 4px); }
 .hero__intro { display: grid; gap: 14px; align-content: start; }
 .hero__lead { font-size: clamp(17px, 2vw, 28px); line-height: 1.15; max-width: 24ch; }
+/* home intro: one punchy line, large (height-capped so home stays one screen) */
+.hero:not(.contact-hero) .hero__lead { font-size: min(clamp(26px, 3.6vw, 60px), 6svh); line-height: 1.05; max-width: 20ch; letter-spacing: -.01em; }
 .readout { display: grid; gap: 4px; align-content: start; text-align: right; }
 .readout div { display: flex; justify-content: flex-end; gap: 14px; }
 .readout dt { color: var(--dim); }
@@ -373,6 +375,10 @@ body.is-leaving main { opacity: 0; filter: blur(6px); }
 
 /* short screens (e.g. phones in landscape): compact contact page so it still fits without scrolling */
 @media (max-height: 520px) {
+  .hero:not(.contact-hero) .hero__lead { font-size: 18px; max-width: 40ch; }
+  .hero:not(.contact-hero) { padding-top: 56px; gap: 8px; }
+  .hero:not(.contact-hero) .mark { display: none; }
+  .hero:not(.contact-hero) .readout { font-size: 10px; gap: 2px 12px; }
   .contact-hero { padding-top: 60px; gap: 8px; }
   .contact-hero .hero__lead { font-size: 18px; max-width: 40ch; }
   .contact-hero .readout { display: grid; gap: 6px; font-size: 14px; }
