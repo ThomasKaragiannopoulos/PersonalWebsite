@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TEE — AI-engineered</title>
+  <meta name="description" content="An AI assistant that helps people understand which building and planning rules apply to a specific address in Greece.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter+Tight:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="cursor" aria-hidden="true"></div>
+
+  <header class="bar">
+    <a href="/" class="bar__name">Thomas K.</a>
+    <nav class="bar__nav">
+      <a href="/portfolio" aria-current="page">Portfolio</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <p class="crumb mono"><a href="/portfolio">← Portfolio</a></p>
+    <h1 class="page-title">TEE</h1>
+
+    <section class="case">
+      <p class="lede">An AI assistant that helps people understand which building and planning rules apply to a specific address in Greece.</p>
+      <dl class="facts mono">
+        <div><dt>Role</dt><dd>AI Engineer, Netcompany</dd></div>
+        <div><dt>Status</dt><dd>In user testing</dd></div>
+        <div><dt>Technology (for technical readers)</dt><dd>LangGraph · Graph RAG · ArcGIS · Oracle 23ai · Azure OpenAI</dd></div>
+      </dl>
+      <div class="stats">
+        <div><b>92%</b><span class="mono">user satisfaction during testing</span></div>
+        <div><b>21</b><span class="mono">pieces of information collected per question</span></div>
+        <div><b>7</b><span class="mono">processing steps</span></div>
+      </div>
+      <div class="section-head mono"><span>How it works</span></div>
+      <div class="flow flow--trace">
+        <p class="trace__bar mono"><span>Example question</span><span>5 steps</span></p>
+        <ol class="trace">
+          <li style="--i: 0"><span class="mono">Ask</span><code>What am I allowed to build at this address?</code></li>
+          <li style="--i: 1"><span class="mono">Locate the address</span><code>Find its coordinates</code></li>
+          <li style="--i: 2"><span class="mono">Identify the relevant city block</span><code>Use official geographic information</code></li>
+          <li style="--i: 3"><span class="mono">Find applicable legislation</span><code>Search the rules for that block</code></li>
+          <li style="--i: 4"><span class="mono">Explain the result</span><code>Answer in Greek or English</code></li>
+        </ol>
+      </div>
+      <div class="section-head mono"><span>What I built</span></div>
+      <ol class="bullets">
+        <li>Achieved 92% user satisfaction during user acceptance testing, combining information from legal and geographic sources in Greek and English.</li>
+        <li>Built a process that identifies the city block associated with an address, because Greek planning restrictions are often linked to that block.</li>
+        <li>Connected each question to the correct block before searching the applicable planning legislation.</li>
+        <li>Designed a seven-step process that checks and interprets the question, resolves the location and assembles a relevant response.</li>
+        <li>Worked with data governance colleagues to ensure deleted personal information could not be recovered from retained backups.</li>
+      </ol>
+      <a class="next" href="/work/protothema"><span class="mono">Next project</span><span class="next__title">ProtoThema →</span></a>
+    </section>
+
+    <section class="cta-strip">
+      <p class="mono">Could AI solve a problem for your team?</p>
+      <span class="cta-group"><a class="cta cta--icon" href="https://www.linkedin.com/in/thomas-karagiannopoulos-a74560167/" target="_blank" rel="noopener" aria-label="LinkedIn profile"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a><a class="cta" href="mailto:thom@skaragiannopoulos.com">Get in touch ↗</a></span>
+    </section>
+  </main>
+
+
+  <script src="../bg.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="../main.js"></script>
+</body>
+</html>

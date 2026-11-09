@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tatoi Club — AI-engineered</title>
+  <meta name="description" content="A personalised recommendation system that selects one relevant club service for each member every week and explains the suggestion in Greek or English.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Inter+Tight:wght@400;500&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="cursor" aria-hidden="true"></div>
+
+  <header class="bar">
+    <a href="/" class="bar__name">Thomas K.</a>
+    <nav class="bar__nav">
+      <a href="/portfolio" aria-current="page">Portfolio</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <p class="crumb mono"><a href="/portfolio">← Portfolio</a></p>
+    <h1 class="page-title">Tatoi Club</h1>
+
+    <section class="case">
+      <p class="lede">A personalised recommendation system that selects one relevant club service for each member every week and explains the suggestion in Greek or English.</p>
+      <dl class="facts mono">
+        <div><dt>Role</dt><dd>AI Engineer, Cloudevo</dd></div>
+        <div><dt>Status</dt><dd>In user testing</dd></div>
+        <div><dt>Technology (for technical readers)</dt><dd>Logistic regression · Beta/Thompson sampling · Gemini · Vertex AI · Cloud Run</dd></div>
+      </dl>
+      <div class="stats">
+        <div><b>~430k</b><span class="mono">past member interactions analysed</span></div>
+        <div><b>~630</b><span class="mono">club services to choose from</span></div>
+        <div><b>94%</b><span class="mono">selection rate in simulation</span></div>
+        <div><b>505</b><span class="mono">automated checks</span></div>
+      </div>
+      <div class="section-head mono"><span>How it works</span></div>
+      <div class="flow flow--cycle">
+        <p class="cycle__core"><b>1</b><span class="mono">personalised suggestion per member, each week</span></p>
+        <ol class="cycle">
+          <li style="--a: 0"><b>~430k past interactions</b></li>
+          <li style="--a: 1"><b>Understand member preferences</b><span class="mono">Choose a suitable service</span></li>
+          <li style="--a: 2"><b>Balance familiar and new options</b><span class="mono">Select 1 of ~630 services</span></li>
+          <li style="--a: 3"><b>Write a short explanation</b><span class="mono">Greek and English; safety checks</span></li>
+          <li style="--a: 4"><b>Learn from outcomes</b><span class="mono">Use feedback to improve future suggestions</span></li>
+        </ol>
+      </div>
+      <div class="section-head mono"><span>What I built</span></div>
+      <ol class="bullets">
+        <li>Built a recommendation model using roughly 430,000 past interactions to select a weekly service from around 630 options.</li>
+        <li>Added short, personalised explanations in Greek and English, with checks to keep the messages appropriate.</li>
+        <li>Tested the approach with 50 simulated members over 10 weeks, recording a 94% selection rate in simulation, alongside comparative testing and 505 automated checks.</li>
+        <li>Led the engineering work from early prototype to user acceptance testing.</li>
+      </ol>
+      <a class="next" href="/work/tee"><span class="mono">Next project</span><span class="next__title">TEE →</span></a>
+    </section>
+
+    <section class="cta-strip">
+      <p class="mono">Could AI solve a problem for your team?</p>
+      <span class="cta-group"><a class="cta cta--icon" href="https://www.linkedin.com/in/thomas-karagiannopoulos-a74560167/" target="_blank" rel="noopener" aria-label="LinkedIn profile"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a><a class="cta" href="mailto:thom@skaragiannopoulos.com">Get in touch ↗</a></span>
+    </section>
+  </main>
+
+
+  <script src="../bg.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="../main.js"></script>
+</body>
+</html>
