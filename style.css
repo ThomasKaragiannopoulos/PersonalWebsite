@@ -209,8 +209,6 @@ body.is-leaving main { opacity: 0; filter: blur(6px); }
 .trace li > span { color: var(--dim); }
 .trace code { font: 400 clamp(14px, 1.3vw, 18px)/1.5 var(--mono); }
 .trace mark { background: var(--fg); color: var(--bg); padding: 0 4px; white-space: nowrap; }
-.flow--trace.armed li { opacity: 0; transform: translateX(-8px); }
-.flow--trace.armed.is-in li { opacity: 1; transform: none; transition: opacity .5s var(--ease), transform .5s var(--ease); transition-delay: calc(var(--i) * .45s); }
 
 /* Tatoi Club: weekly cycle */
 .flow--cycle { position: relative; width: min(100%, 680px); aspect-ratio: 1; margin: 0 auto; }
@@ -323,7 +321,7 @@ body.is-leaving main { opacity: 0; filter: blur(6px); }
   display: block; overflow: hidden; border-block: 1px solid var(--line); padding: 2vw 0;
   margin-inline: calc(var(--pad) * -1);
 }
-.marquee { display: flex; width: max-content; animation: marquee 18s linear infinite; }
+.marquee { display: flex; width: max-content; animation: marquee 36s linear infinite; }
 .marquee span { font: 900 clamp(56px, 11vw, 220px)/.85 var(--display); font-stretch: 125%; text-transform: uppercase; letter-spacing: -.04em; white-space: pre; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
@@ -392,6 +390,10 @@ body.is-leaving main { opacity: 0; filter: blur(6px); }
   .contact-hero .mark { display: none; }
   .contact-hero .marquee span { font-size: 20svh; }
 }
+
+/* architecture diagrams: frozen, no motion */
+.stops::after, .flow--cycle::after, .router__out li, .sleep__stream path, .sleep__chart path { animation: none; }
+.stops::after { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .marquee, .stops::after, .flow--cycle::after, main, .router__out li, .sleep__stream path, .sleep__chart path { animation: none; }

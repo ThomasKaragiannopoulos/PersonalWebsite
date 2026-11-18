@@ -1,4 +1,6 @@
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+// text decode runs on the home page only (plus nav hover and page leave, which pass anyPage)
+const home = !!document.querySelector(".headline");
 
 // matrix-style decode: letters cycle through random glyphs, then lock in left to right
 // Latin + digits + Japanese katakana/hiragana + Korean hangul + Chinese characters
@@ -85,7 +87,7 @@ const freezeWords = (el) => {
   };
 };
 const scramble = (el, opts = {}) => {
-  if (reduce) return;
+  if (reduce || (!home && !opts.anyPage)) return;
   if (!opts.fixed) return run(el, opts);
   document.fonts.ready.then(() => run(el, { ...opts, onDone: freezeWords(el) }));
 };
@@ -199,21 +201,9 @@ if (!reduce) {
   );
 }
 
-// case studies: the TEE query trace steps in when it scrolls into view
-const trace = document.querySelector(".flow--trace");
-if (trace && !reduce && "IntersectionObserver" in window) {
-  trace.classList.add("armed");
-  new IntersectionObserver((entries, io) => {
-    if (entries[0].isIntersecting) {
-      trace.classList.add("is-in");
-      io.disconnect();
-    }
-  }, { threshold: 0.3 }).observe(trace);
-}
-
 // nav: links re-decode on hover (Latin only, so the bar doesn't jitter)
 document.querySelectorAll(".bar a").forEach((a) =>
-  a.addEventListener("pointerenter", () => scramble(a, { pace: 0.35, glyphs: LATIN })));
+  a.addEventListener("pointerenter", () => scramble(a, { pace: 0.35, glyphs: LATIN, anyPage: true })));
 
 // page transition out: visible text dissolves into glyphs and the page fades, then we navigate
 const LEAVE_MS = 550;
@@ -241,7 +231,7 @@ document.addEventListener("click", (e) => {
     .forEach((el) => {
       if (!visible(el)) return;
       leaving.push(el);
-      scramble(el, { pace: 0.25, out: true });
+      scramble(el, { pace: 0.25, out: true, glyphs: home ? GLYPHS : LATIN, anyPage: true });
     });
   if (url.hash && lenis) {
     // open the next page at the top; it glides to the section itself (a #hash in the URL makes the browser jump)
