@@ -131,7 +131,7 @@
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.bindTexture(gl.TEXTURE_2D, targets[read].tex);
     gl.uniform1i(smokeProg.u.flow, 0);
-    gl.uniform1f(smokeProg.u.t, ms / 1000);
+    gl.uniform1f(smokeProg.u.t, ms / 3000); // 3x slower drift
     gl.uniform1f(smokeProg.u.aspect, aspect);
     gl.uniform2f(smokeProg.u.res, canvas.width, canvas.height);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
